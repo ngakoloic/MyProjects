@@ -1,0 +1,21 @@
+.freshcutlist {
+    overflow-x: scroll;
+    /* height: 500px; */
+    display: flex;
+    /* max-height: 300px; */
+    margin-left: 10px;
+}
+
+.freshcutlist::-webkit-scrollbar {
+    width: 0;
+}
+
+.freshcutlist .item {
+    line-height: 110px;
+    min-width: 250px;
+    margin: 0 10px 0 10px;
+}
+
+.freshcutlist .item>:first-child {
+    margin-left: 0px;
+}
