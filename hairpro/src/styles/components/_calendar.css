@@ -1,0 +1,16 @@
+/* .fc .fc-bg-event {
+    opacity: unset;
+    background-color: var(--fc-button-bg-color);
+}
+
+.fc .fc-bg-event .fc-event-title {
+    color: white;
+} */
+.bg-events-custom {
+    opacity: unset;
+    background-color: var(--fc-button-bg-color);
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.05em;
+}

@@ -2,3 +2,12 @@
     padding: 15px 0 25px 0;
     background-color: rgb(234, 234, 234);
 }
+
+.section-schedule {
+    border: 1px solid red;
+    padding: 15px 0 25px 0;
+}
+
+.section-schedule .contain-calendar {
+    padding: 0 10px 0 10px;
+}

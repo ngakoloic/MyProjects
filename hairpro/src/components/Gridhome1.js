@@ -1,6 +1,7 @@
 import { Image } from 'react-bootstrap';
 
 function Gridhome1() {
+    // alert('in')
     return (
         <div className='freshcutlist'>
             <div className='item'><Image src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>

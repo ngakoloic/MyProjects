@@ -21,7 +21,7 @@ function Mynavbar() {
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-3">
-              <Nav.Link href="/home">Home</Nav.Link>
+              <Nav.Link href="/">Home</Nav.Link>
               <NavDropdown
                 title="Categories"
                 id={`offcanvasNavbarDropdown-expand-lg`}
