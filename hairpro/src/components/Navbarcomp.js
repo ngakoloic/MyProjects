@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function Mynavbar() {
   return (
     <Navbar key='lg' expand='lg' className="bg-body-tertiary" sticky="top">
+      {/* <div id="home"> */}
       <Container>
         <Navbar.Brand href="#">
           <Image src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Logo" width="55" height="24"></Image>
@@ -23,7 +24,7 @@ function Mynavbar() {
             <Nav className="justify-content-end flex-grow-1 pe-3">
               <Nav.Link href="/">Home</Nav.Link>
               <NavDropdown
-                title="Categories"
+                title="Category"
                 id={`offcanvasNavbarDropdown-expand-lg`}
               >
                 <NavDropdown.Item href="#action3">Mens</NavDropdown.Item>
@@ -36,9 +37,10 @@ function Mynavbar() {
                 </NavDropdown.Item>
               </NavDropdown>
               <Nav.Link href="/about">About us</Nav.Link>
-              <Nav.Link href="#">Contact</Nav.Link>
-              <Nav.Link href="#">Appointment</Nav.Link>
+              <Nav.Link href="#section-schedule">Appointment</Nav.Link>
+              <Nav.Link href="#section-galeries">Galeries</Nav.Link>
               <Nav.Link href="#">Testimonies</Nav.Link>
+              <Nav.Link href="#">Contact</Nav.Link>
 
             </Nav>
             <Form className="d-flex">
@@ -53,7 +55,9 @@ function Mynavbar() {
           </Offcanvas.Body>
         </Navbar.Offcanvas>
       </Container>
-    </Navbar>
+      {/* </div> */}
+
+    </Navbar >
   )
 }
 

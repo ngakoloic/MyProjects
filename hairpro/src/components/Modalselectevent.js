@@ -26,8 +26,4 @@ const Modalselectevent = (props) => {
     );
 };
 
-function test() {
-    alert('in')
-}
-
 export default Modalselectevent;

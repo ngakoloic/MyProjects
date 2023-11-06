@@ -11,3 +11,26 @@
 .section-schedule .contain-calendar {
     padding: 0 10px 0 10px;
 }
+
+.section-galeries {
+    border: 1px solid blue;
+    padding: 15px 0 25px 0;
+    background-color: rgb(26, 23, 23);
+    color: white;
+}
+
+/* Scroll to Top Button */
+
+.iconbutton {
+    width: 48px;
+    height: 48px;
+    border-radius: 100%;
+    background-color: #7600bc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    right: 3%;
+    bottom: 3%;
+    cursor: pointer;
+}
