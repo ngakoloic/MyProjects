@@ -33,4 +33,5 @@
     right: 3%;
     bottom: 3%;
     cursor: pointer;
+    z-index: 9999;
 }
