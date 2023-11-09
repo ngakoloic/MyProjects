@@ -1,17 +1,22 @@
-.swiper {
-    width: 100%;
-    padding-bottom: 50px;
-}
-
-.swiper-slide {
+.section-galeries .swiper-slide {
     background-position: center;
     background-size: cover;
     width: 300px;
     /* height: 300px; */
 }
 
-.swiper-slide img {
+.section-galeries .swiper-slide img {
     display: block;
     width: 100%;
+    border-radius: 2rem;
+}
+
+.section-galeries .swiper-3d .swiper-slide-shadow-left {
+    background-image: linear-gradient(to left, rgb(0 0 0 / 51%), rgb(0 0 0 / 51%));
+    border-radius: 2rem;
+}
+
+.section-galeries .swiper-3d .swiper-slide-shadow-right {
+    background-image: linear-gradient(to right, rgb(0 0 0 / 51%), rgb(0 0 0 / 51%));
     border-radius: 2rem;
 }

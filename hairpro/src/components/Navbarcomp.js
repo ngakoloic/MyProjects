@@ -39,7 +39,7 @@ function Mynavbar() {
               <Nav.Link href="/about">About us</Nav.Link>
               <Nav.Link href="#section-schedule">Appointment</Nav.Link>
               <Nav.Link href="#section-galeries">Galeries</Nav.Link>
-              <Nav.Link href="#">Testimonies</Nav.Link>
+              <Nav.Link href="#section-testimonies">Testimonies</Nav.Link>
               <Nav.Link href="#">Contact</Nav.Link>
 
             </Nav>

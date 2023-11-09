@@ -6,6 +6,7 @@ import Calender from '../components/Calender';
 import { Col, Row } from 'react-bootstrap';
 import Businesshour from '../components/Businesshour';
 import Galeries from '../components/Galeries';
+import Testimonie from '../components/Testimonie';
 
 const Home = () => {
     return (
@@ -39,6 +40,13 @@ const Home = () => {
                     <h1>Galeries</h1>
                     <br />
                     <Galeries></Galeries>
+                </div>
+            </div>
+            <div className="section-testimonies" id="section-testimonies">
+                <div className="container">
+                    <h1>What they said about us</h1>
+                    <br />
+                    <Testimonie></Testimonie>
                 </div>
             </div>
             <div class="iconbutton">

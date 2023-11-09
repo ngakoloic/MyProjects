@@ -5,7 +5,16 @@ import timeGridplugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Button, Col, Form, Image, Modal, Row } from 'react-bootstrap';
 import Formappointment from './Formappointment';
-import Calender from './Calender';
+// import Calender from './Calender';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+// import required modules
+import { Pagination } from 'swiper/modules';
 
 function Gridhome1() {
     // alert('in')
@@ -46,43 +55,71 @@ function Gridhome1() {
     ]
     return (
         <div className='freshcutlist'>
-            <div className='item'><Image onClick={(event) => {
-                const e = event.target;
-                chooseCut(e.id, e.src)
-            }} id='1' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
-            <div className='item'><Image onClick={(event) => {
-                const e = event.target;
-                chooseCut(e.id, e.src)
-            }} id='2' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
-            <div className='item'><Image onClick={(event) => {
-                const e = event.target;
-                chooseCut(e.id, e.src)
-            }} id='3' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
-            <div className='item'><Image onClick={(event) => {
-                const e = event.target;
-                chooseCut(e.id, e.src)
-            }} id='4' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
-            <div className='item'><Image onClick={(event) => {
-                const e = event.target;
-                chooseCut(e.id, e.src)
-            }} id='5' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
-            <div className='item'><Image onClick={(event) => {
-                const e = event.target;
-                chooseCut(e.id, e.src)
-            }} id='6' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
-            <div className='item'><Image onClick={(event) => {
-                const e = event.target;
-                chooseCut(e.id, e.src)
-            }} id='7' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
-            <div className='item'><Image onClick={(event) => {
-                const e = event.target;
-                chooseCut(e.id, e.src)
-            }} id='8' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
-            <div className='item'><Image onClick={(event) => {
-                const e = event.target;
-                chooseCut(e.id, e.src)
-            }} id='9' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
-
+            <Swiper
+                slidesPerView={'auto'}
+                spaceBetween={30}
+                loop={true}
+                pagination={{
+                    clickable: true,
+                }}
+                modules={[Pagination]}
+            // className="mySwiper-1"
+            >
+                <SwiperSlide>
+                    <div className='item'><Image onClick={(event) => {
+                        const e = event.target;
+                        chooseCut(e.id, e.src)
+                    }} id='1' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className='item'><Image onClick={(event) => {
+                        const e = event.target;
+                        chooseCut(e.id, e.src)
+                    }} id='2' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className='item'><Image onClick={(event) => {
+                        const e = event.target;
+                        chooseCut(e.id, e.src)
+                    }} id='3' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className='item'><Image onClick={(event) => {
+                        const e = event.target;
+                        chooseCut(e.id, e.src)
+                    }} id='4' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className='item'><Image onClick={(event) => {
+                        const e = event.target;
+                        chooseCut(e.id, e.src)
+                    }} id='5' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className='item'><Image onClick={(event) => {
+                        const e = event.target;
+                        chooseCut(e.id, e.src)
+                    }} id='6' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className='item'><Image onClick={(event) => {
+                        const e = event.target;
+                        chooseCut(e.id, e.src)
+                    }} id='7' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className='item'><Image onClick={(event) => {
+                        const e = event.target;
+                        chooseCut(e.id, e.src)
+                    }} id='8' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className='item'><Image onClick={(event) => {
+                        const e = event.target;
+                        chooseCut(e.id, e.src)
+                    }} id='9' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                </SwiperSlide>
+            </Swiper>
             <Modal
                 show={show}
                 onHide={handleClose}

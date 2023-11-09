@@ -32,7 +32,7 @@ const Galeries = () => {
             }}
             // install Swiper modules
             modules={[EffectCoverflow, Pagination]}
-        // className='mySwiper'
+        // className='mySwiper-2'
         >
             <SwiperSlide>
                 <img src="img/coupe-homme.jpg" />

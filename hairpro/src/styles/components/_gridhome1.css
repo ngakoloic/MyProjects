@@ -1,21 +1,20 @@
 .freshcutlist {
-    overflow-x: scroll;
-    /* height: 500px; */
-    display: flex;
-    /* max-height: 300px; */
-    margin-left: 10px;
+    padding: 0 10px 0 10px;
 }
 
-.freshcutlist::-webkit-scrollbar {
-    width: 0;
+.freshcutlist .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    /* background: #fff; */
+
+    /* Center slide text vertically */
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
 }
 
-.freshcutlist .item {
-    line-height: 110px;
-    min-width: 250px;
-    margin: 0 10px 0 10px;
-}
-
-.freshcutlist .item>:first-child {
-    margin-left: 0px;
+.freshcutlist .swiper-slide img {
+    display: block;
+    box-shadow: 9px 15px 20px 0px #676767;
 }

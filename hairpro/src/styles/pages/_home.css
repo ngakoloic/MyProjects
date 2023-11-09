@@ -3,7 +3,8 @@
     background-color: rgb(234, 234, 234);
 }
 
-.section-schedule {
+.section-schedule,
+.section-testimonies {
     border: 1px solid red;
     padding: 15px 0 25px 0;
 }
@@ -33,5 +34,5 @@
     right: 3%;
     bottom: 3%;
     cursor: pointer;
-    z-index: 9999;
+    z-index: 1055;
 }
