@@ -7,6 +7,7 @@ import { Col, Row } from 'react-bootstrap';
 import Businesshour from '../components/Businesshour';
 import Galeries from '../components/Galeries';
 import Testimonie from '../components/Testimonie';
+import Contact from '../components/Contact';
 
 const Home = () => {
     return (
@@ -47,6 +48,13 @@ const Home = () => {
                     <h1>What they said about us</h1>
                     <br />
                     <Testimonie></Testimonie>
+                </div>
+            </div>
+            <div className="section-contact" id="section-contact">
+                <div className="container">
+                    {/* <h1>Contact us</h1>
+                    <br /> */}
+                    <Contact></Contact>
                 </div>
             </div>
             <div class="iconbutton">

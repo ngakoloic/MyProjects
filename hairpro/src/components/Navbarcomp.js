@@ -4,7 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function Mynavbar() {
   return (
     <Navbar key='lg' expand='lg' className="bg-body-tertiary" sticky="top">
-      {/* <div id="home"> */}
       <Container>
         <Navbar.Brand href="#">
           <Image src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Logo" width="55" height="24"></Image>
@@ -40,7 +39,7 @@ function Mynavbar() {
               <Nav.Link href="#section-schedule">Appointment</Nav.Link>
               <Nav.Link href="#section-galeries">Galeries</Nav.Link>
               <Nav.Link href="#section-testimonies">Testimonies</Nav.Link>
-              <Nav.Link href="#">Contact</Nav.Link>
+              <Nav.Link href="#section-contact">Contact</Nav.Link>
 
             </Nav>
             <Form className="d-flex">
