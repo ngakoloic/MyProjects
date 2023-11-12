@@ -50,3 +50,8 @@
 .section-contact .contact-information .contact-detail svg {
     margin-right: 10px;
 }
+
+.text-muted {
+    --bs-text-opacity: 1;
+    color: white !important;
+}

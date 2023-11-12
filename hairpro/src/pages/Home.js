@@ -8,6 +8,7 @@ import Businesshour from '../components/Businesshour';
 import Galeries from '../components/Galeries';
 import Testimonie from '../components/Testimonie';
 import Contact from '../components/Contact';
+import Footer from '../components/Footer';
 
 const Home = () => {
     return (
@@ -57,6 +58,8 @@ const Home = () => {
                     <Contact></Contact>
                 </div>
             </div>
+            {/* <div class="b-divider"></div> */}
+            <Footer></Footer>
             <div class="iconbutton">
                 <a href="#home">
                     {/* Add the code here for the logo to appear and the icon to be actionable */}
