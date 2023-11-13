@@ -2,3 +2,27 @@
     padding: 0 10px 0 10px;
     margin-bottom: 20px;
 }
+
+.section-schedule .swiper-slide {
+    width: 100px;
+}
+
+.section-schedule .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section-schedule .swiper-slide img {
+    border-radius: 50%;
+    border: 5px solid #b9a036;
+}
+
+.section-schedule .swiper-slide #team-name {
+    background-color: #b9a036;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+}

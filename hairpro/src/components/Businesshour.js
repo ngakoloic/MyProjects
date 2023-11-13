@@ -1,5 +1,6 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Button, Col, Form, Image, Modal, Row } from 'react-bootstrap';
+import Teams from './Teams';
 
 const Businesshour = () => {
     return (
@@ -32,9 +33,7 @@ const Businesshour = () => {
 
                 </Col>
                 <Col xs={12} md={12}>
-                    <h4>Our conditions</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores amet ex, deserunt quisquam mollitia sunt ipsa repudiandae earum tempora. Voluptatibus eligendi nemo, saepe repellat natus tempora quasi nihil corporis quidem similique rem? Necessitatibus minus rerum vero nostrum quos ex, possimus non tempore cum atque ea ducimus eligendi temporibus animi iusto!</p>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores amet ex, deserunt quisquam mollitia sunt ipsa repudiandae earum tempora. Voluptatibus eligendi nemo, saepe repellat natus tempora quasi nihil corporis quidem similique rem? Necessitatibus minus rerum vero nostrum quos ex, possimus non tempore cum atque ea ducimus eligendi temporibus animi iusto!</p>
+                    <Teams></Teams>
                 </Col>
             </Row>
         </div>

@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Fullcalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridplugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Modal, Button } from 'react-bootstrap';
 import Formappointment from './Formappointment';
+import { AppContext } from '../reducers/AppContext';
 
 const Calender = () => {
+
+    //const events = useSelector(state => state.teamevent);
+    const { events } = useContext(AppContext);
+    const new_events = events;
+
     const [show, setShow] = useState(false);
     const [title, setTitle] = useState('');
     const [start, setStart] = useState('');
@@ -15,29 +21,6 @@ const Calender = () => {
 
     const handleClose = () => setShow(false);
 
-    const events = [
-        {
-            id: 1,
-            title: 'event 1',
-            start: '2023-11-05T08:00:00',
-            end: '2023-11-05T10:00:00',
-            display: 'block',
-        },
-        {
-            id: 3,
-            title: 'event 1',
-            start: '2023-11-05T12:00:00',
-            end: '2023-11-05T15:00:00',
-            display: 'block',
-        },
-        {
-            id: 2,
-            title: 'event 2',
-            start: '2023-11-10T08:00:00',
-            end: '2023-11-10T10:00:00',
-            display: 'block',
-        }
-    ]
     return (
         <div className='contain-calendar'>
             <Fullcalendar
@@ -52,7 +35,7 @@ const Calender = () => {
                         end: 'prev,next', // will normally be on the right. if RTL, will be on the left
                     }
                 }
-                events={events}
+                events={new_events}
                 eventClick={(el) => {
                     setTitle(el.event.title);
                     setHour(el.event.start.getHours());
