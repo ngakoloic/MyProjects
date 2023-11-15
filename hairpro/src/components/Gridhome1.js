@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Fullcalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridplugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Button, Col, Form, Image, Modal, Row } from 'react-bootstrap';
 import Formappointment from './Formappointment';
+import Teams from './Teams';
+import { AppContext } from '../reducers/AppContext';
 // import Calender from './Calender';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -18,6 +20,8 @@ import { Pagination } from 'swiper/modules';
 
 function Gridhome1() {
     // alert('in')
+    const { events } = useContext(AppContext);
+
     const [show, setShow] = useState(false);
     const [hidden, setHidden] = useState(true);
     const [imgfreshcut, setImgfreshcut] = useState();
@@ -30,29 +34,6 @@ function Gridhome1() {
     const handleClose = () => setShow(false);
     const handleHidden = () => setHidden(true);
 
-    const events = [
-        {
-            id: 1,
-            title: 'event 1',
-            start: '2023-11-05T08:00:00',
-            end: '2023-11-05T10:00:00',
-            display: 'block',
-        },
-        {
-            id: 3,
-            title: 'event 1',
-            start: '2023-11-05T12:00:00',
-            end: '2023-11-05T15:00:00',
-            display: 'block',
-        },
-        {
-            id: 2,
-            title: 'event 2',
-            start: '2023-11-10T08:00:00',
-            end: '2023-11-10T10:00:00',
-            display: 'block',
-        }
-    ]
     return (
         <div className='freshcutlist'>
             <Swiper
@@ -147,6 +128,8 @@ function Gridhome1() {
                             </Col>
                         </Row>
                         <div className='py-3'>
+                            <Teams></Teams>
+                            <div style={{ marginBottom: 15 + 'px' }}></div>
                             <Fullcalendar
                                 plugins={[dayGridPlugin, timeGridplugin, interactionPlugin]}
                                 selectable={true}

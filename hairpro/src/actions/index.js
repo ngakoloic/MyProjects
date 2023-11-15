@@ -1,10 +1,9 @@
-import { events } from '../data/functions';
+import { listevents } from '../data/functions';
 
 const teamschedule = (id) => {
-    const id_b = parseInt(id);
     return {
-        type: 'SELECT-TEAM',
-        event: events[0][id_b]
+        type: 'SELECT-BARBER',
+        event: listevents[0][id]
     }
 };
 

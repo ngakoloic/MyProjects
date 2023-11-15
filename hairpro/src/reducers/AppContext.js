@@ -5,13 +5,14 @@ import { initialEvents } from '../data/functions'; //Evenements initialles qui s
 
 const teamevent = (state = [], action) => {
     switch (action.type) {
-        case 'SELECT-TEAM':
+        case 'SELECT-BARBER':
             state = [action.event]; //Encapsuler dans une [] pour pouvoir l'utiliser dans le calendrier
             return state;
-        case 'SELECT-ALL-TEAM':
-            state = initialEvents;
+        case 'SELECT-ALL-BARBER':
+            state = initialEvents();
             return state;
         default:
+            state = initialEvents();
             return state;
     }
 }
@@ -26,7 +27,7 @@ export const AppContext = createContext(null);
 //Et passage des valeurs(props) coe param aux elements enfants(props.children) contenue dans tous les autres composants
 export const AppProvider = (props) => {
     //state prend la valeur initialle par defaut et dispatch s'occupe de l'action a effectuer a travers une fonction bien definit
-    const [state, dispatch] = useReducer(teamevent, initialEvents);
+    const [state, dispatch] = useReducer(teamevent, initialEvents());
     return (
         <AppContext.Provider
             value={{

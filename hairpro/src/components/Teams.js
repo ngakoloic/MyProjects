@@ -16,7 +16,7 @@ import { Pagination } from 'swiper/modules';
 const Teams = () => {
     const { dispatch } = useContext(AppContext);
     return (
-        <div>
+        <div className='our-teams'>
             <h4>Our teams</h4>
             <Swiper
                 slidesPerView={'auto'}
@@ -33,10 +33,6 @@ const Teams = () => {
                         const e = event.target;
                         const id = e.id;
                         dispatch(teamschedule(id));
-                        // dispatch({
-                        //     type: 'SELECT-TEAM',
-                        //     id: e.id,
-                        // })
                     }} id='1' src="img/coupe-homme.jpg" width="100px" height="100px" />
                         <span id='team-name'>Loic1 Stars</span>
                     </div>
@@ -71,7 +67,7 @@ const Teams = () => {
             </Swiper>
             <Button onClick={() => {
                 dispatch({
-                    type: 'SELECT-ALL-TEAM',
+                    type: 'SELECT-ALL-BARBER',
                 })
             }}>View all</Button>
         </div>
