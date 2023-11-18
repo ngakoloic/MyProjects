@@ -1,3 +1,11 @@
+// Liste des images for header
+export const backgroundImage = {
+    img_1: require('../img/IMG_HAIRSTYLE_01.jpg'),
+    img_2: require('../img/IMG_HAIRSTYLE_02.jpg'),
+    img_3: require('../img/IMG_HAIRSTYLE_03.jpg')
+}
+
+// Liste des evenements
 export const listevents = [
     {
         '1': {

@@ -18,6 +18,7 @@ const Teams = () => {
     return (
         <div className='our-teams'>
             <h4>Our teams</h4>
+            <p>Select one to check availability</p>
             <Swiper
                 slidesPerView={'auto'}
                 spaceBetween={15}

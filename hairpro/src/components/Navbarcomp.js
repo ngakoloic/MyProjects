@@ -1,5 +1,6 @@
 import { Button, Container, Form, Nav, Navbar, NavDropdown, Offcanvas, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BsPersonCircle } from 'react-icons/bs';
 
 function Mynavbar() {
   return (
@@ -40,9 +41,21 @@ function Mynavbar() {
               <Nav.Link href="#section-galeries">Galeries</Nav.Link>
               <Nav.Link href="#section-testimonies">Testimonies</Nav.Link>
               <Nav.Link href="#section-contact">Contact</Nav.Link>
+              <NavDropdown
+                title='Account'
+                id={`offcanvasNavbarDropdown-expand-lg`}
 
+              >
+                <NavDropdown.Item href="#action3">Login</NavDropdown.Item>
+                <NavDropdown.Item href="#action4">
+                  Logout
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action5">
+                  Register
+                </NavDropdown.Item>
+              </NavDropdown>
             </Nav>
-            <Form className="d-flex">
+            {/* <Form className="d-flex">
               <Form.Control
                 type="search"
                 placeholder="Search"
@@ -50,7 +63,7 @@ function Mynavbar() {
                 aria-label="Search"
               />
               <Button variant="outline-success">Search</Button>
-            </Form>
+            </Form> */}
           </Offcanvas.Body>
         </Navbar.Offcanvas>
       </Container>

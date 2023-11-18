@@ -10,6 +10,7 @@ import { AppContext } from '../reducers/AppContext';
 // import Calender from './Calender';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { freshcutImage } from '../data/functions';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -36,6 +37,8 @@ function Gridhome1() {
 
     return (
         <div className='freshcutlist'>
+            <h4 style={{ textAlign: 'center' }}>Choose your style and make your appointment</h4>
+            <br />
             <Swiper
                 slidesPerView={'auto'}
                 spaceBetween={30}
@@ -50,55 +53,55 @@ function Gridhome1() {
                     <div className='item'><Image onClick={(event) => {
                         const e = event.target;
                         chooseCut(e.id, e.src)
-                    }} id='1' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                    }} id='1' src="./img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div className='item'><Image onClick={(event) => {
                         const e = event.target;
                         chooseCut(e.id, e.src)
-                    }} id='2' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                    }} id='2' src="./img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div className='item'><Image onClick={(event) => {
                         const e = event.target;
                         chooseCut(e.id, e.src)
-                    }} id='3' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                    }} id='3' src="./img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div className='item'><Image onClick={(event) => {
                         const e = event.target;
                         chooseCut(e.id, e.src)
-                    }} id='4' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                    }} id='4' src="./img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div className='item'><Image onClick={(event) => {
                         const e = event.target;
                         chooseCut(e.id, e.src)
-                    }} id='5' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                    }} id='5' src="./img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div className='item'><Image onClick={(event) => {
                         const e = event.target;
                         chooseCut(e.id, e.src)
-                    }} id='6' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                    }} id='6' src="./img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div className='item'><Image onClick={(event) => {
                         const e = event.target;
                         chooseCut(e.id, e.src)
-                    }} id='7' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                    }} id='7' src="./img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div className='item'><Image onClick={(event) => {
                         const e = event.target;
                         chooseCut(e.id, e.src)
-                    }} id='8' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                    }} id='8' src="./img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div className='item'><Image onClick={(event) => {
                         const e = event.target;
                         chooseCut(e.id, e.src)
-                    }} id='9' src="img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
+                    }} id='9' src="./img/coupe-homme.jpg" width="250px" height="300px" rounded /></div>
                 </SwiperSlide>
             </Swiper>
             <Modal

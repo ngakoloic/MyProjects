@@ -1,9 +1,18 @@
 $white: rgb(243, 242, 243);
 $black: black;
 
+.navbar-nav .nav-link:hover {
+    color: rgb(28, 28, 28);
+}
+
 // taille du menu deroulant mobile
 .offcanvas {
     max-width: 85%;
+}
+
+// backgroundcolor Carousel.Caption 
+.carousel-caption {
+    background: rgba(255, 255, 255, 0.68);
 }
 
 .swiper {
