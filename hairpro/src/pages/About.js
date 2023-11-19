@@ -7,18 +7,18 @@ import { Col, Row, Image, Breadcrumb } from 'react-bootstrap';
 import Accordion from 'react-bootstrap/Accordion';
 import Iconbutton from '../components/Iconbutton';
 
-const About = () => {
+const About = (props) => {
     return (
         <div id='scrollup'>
             <Mynavbar></Mynavbar>
-            <Headerpage></Headerpage>
+            <Headerpage title={props.title}></Headerpage>
             <div className="container" style={{
                 marginBottom: '100px'
             }}>
                 <br />
                 <Breadcrumb>
                     <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-                    <Breadcrumb.Item active>About us</Breadcrumb.Item>
+                    <Breadcrumb.Item active>{props.title}</Breadcrumb.Item>
                 </Breadcrumb>
                 <br />
                 <Accordion defaultActiveKey={['0', '1']} alwaysOpen>

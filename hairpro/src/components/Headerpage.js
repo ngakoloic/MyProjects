@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Headerpage = () => {
+const Headerpage = (props) => {
     return (
         <div className='headerpage'>
-            <h1>ABOUT US</h1>
+            <h1>{props.title}</h1>
         </div>
     );
 };
