@@ -3,7 +3,7 @@ import Mynavbar from '../components/Navbarcomp';
 import Headerpage from '../components/Headerpage';
 import Footer from '../components/Footer';
 import Contact from '../components/Contact';
-import { Col, Row, Image, Breadcrumb } from 'react-bootstrap';
+import { Breadcrumb } from 'react-bootstrap';
 import Accordion from 'react-bootstrap/Accordion';
 import Iconbutton from '../components/Iconbutton';
 

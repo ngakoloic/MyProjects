@@ -1,0 +1,44 @@
+.list-barber {
+    width: 100%;
+    padding: 0 15px;
+
+    .row {
+        justify-content: space-around;
+        display: flex;
+    }
+
+    .item {
+        border: 1px solid #c4c4c5;
+        padding: 0;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        min-width: 355px;
+        width: 410px;
+        cursor: pointer;
+    }
+
+    #barbershop-img {
+        float: left;
+        margin-right: 10px;
+
+        img {
+            border-radius: 10px 0 0 10px;
+        }
+    }
+
+    .details {
+        line-height: 20px;
+        padding-right: 5px;
+
+        #adr {
+            font-size: 0.8rem;
+        }
+
+        #statut {
+            display: flex;
+            justify-content: space-between;
+            height: 35px;
+            align-items: flex-end;
+        }
+    }
+}

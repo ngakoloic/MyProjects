@@ -32,7 +32,7 @@ const Formconnect = (props) => {
                         </Form.Group>
                     </Form>
                     <p>
-                        Don't have an account?
+                        Don't have an account?&nbsp;
                         <i><a href="#"
                             onClick={() => SetModalFormRegister(true)}
                         >Register</a></i>
@@ -54,7 +54,7 @@ const Formconnect = (props) => {
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Enter your information for registration
+                        Sign Up
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
