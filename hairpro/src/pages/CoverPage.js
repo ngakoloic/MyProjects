@@ -19,7 +19,7 @@ const CoverPage = () => {
                 height: '100vh',
                 paddingTop: '30px'
             }}>
-                <Button variant="success">Create your BarberShop &nbsp; <BsShopWindow /></Button>
+                <Button variant="success" onClick={() => navigate('/create-my-business')}>Create your Business &nbsp; <BsShopWindow /></Button>
                 <h4>Or</h4>
                 <Button variant="outline-success" onClick={() => SetModalFormShow(true)}>Sign In</Button>
                 <br />
@@ -107,5 +107,4 @@ const CoverPage = () => {
         </div>
     );
 };
-
 export default CoverPage;

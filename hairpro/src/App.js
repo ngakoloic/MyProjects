@@ -5,6 +5,7 @@ import About from './pages/About';
 import { AppProvider } from './reducers/AppContext'; //Composant de notre Context(AppContext) qui englobera toute notre app
 import Profile from './pages/Profile';
 import CoverPage from './pages/CoverPage';
+import CreateBusiness from './pages/CreateBusiness';
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Routes>
           <Route exact path='/' element={<CoverPage />}></Route>
           <Route exact path='/home' element={<Home />}></Route>
+          <Route exact path='/create-my-business' element={<CreateBusiness title={'Business checkout'} />}></Route>
           <Route exact path='/about' element={<About title={'About us'} />}></Route>
           <Route exact path='/my-profile' element={<Profile title={'My Profile'} />}></Route>
           <Route exact path='*' element={<Home />}></Route>
