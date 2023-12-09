@@ -2,10 +2,54 @@ import { Button, Container, Form, Nav, Navbar, NavDropdown, Offcanvas, Image } f
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BsPersonCircle } from 'react-icons/bs';
 import Formconnect from './Formconnect';
-import { useState } from 'react';
+import { getCookie } from '../data/functions';
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../reducers/AppContext';
 
-function Mynavbar() {
+import axios from 'axios';
+// import { login } from '../data/functions';
+
+axios.defaults.withCredentials = true;
+const client = axios.create({
+  baseURL: "http://localhost:8000/"
+})
+
+const Mynavbar = () => {
+  const { dispatch, randomutility } = useContext(AppContext);
   const [modalFormShow, SetModalFormShow] = useState(false);
+
+  useEffect(() => {
+    client.get('api/user/',
+      { withCredentials: true },
+      {
+        headers: { "X-CSRFToken": getCookie('csrftoken') },
+      }
+    ).then((res) => {
+      dispatch({
+        type: 'USER-CONNECT'
+      });
+    }).catch((err) => {
+      dispatch({
+        type: 'USER-CONNECT-NOT'
+      });
+    })
+  }, [])
+
+  const submitLogout = () => {
+    client.post('api/logout/',
+      { withCredentials: true },
+      {
+        headers: { "X-CSRFToken": getCookie('csrftoken') },
+      }
+    ).then((res) => {
+      console.log(res.data);
+      dispatch({
+        type: 'USER-CONNECT-NOT'
+      });
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
 
   return (
     <>
@@ -53,12 +97,9 @@ function Mynavbar() {
                 >
                   <NavDropdown.Item href="/my-profile"
                   >My profile</NavDropdown.Item>
-                  <NavDropdown.Item href="#action3"
-                    onClick={() => SetModalFormShow(true)}
-                  >Login</NavDropdown.Item>
-                  <NavDropdown.Item href="#action4">
-                    Logout
-                  </NavDropdown.Item>
+                  {
+                    (randomutility) ? <NavDropdown.Item onClick={() => submitLogout()}>Logout</NavDropdown.Item> : <NavDropdown.Item onClick={() => SetModalFormShow(true)}>Login</NavDropdown.Item>
+                  }
                 </NavDropdown>
               </Nav>
               {/* <Form className="d-flex">

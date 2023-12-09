@@ -31,25 +31,74 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'hairpro',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    )
+}
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000','http://192.168.0.200:3000']
+
 ROOT_URLCONF = 'backend.urls'
+
+# CSRF_COOKIE_NAME = "csrftoken"
+
+# # CORS_EXPOSE_HEADERS = (
+# #     'Access-Control-Allow-Origin: *',
+# # )
+
+
+# CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ORIGIN_ALL_ALLOW = [
+    'http://localhost:3000',
+    'http://192.168.0.200:3000'
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://192.168.0.200:3000'
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+
+CORS_ORIGIN_ORIGINS = [
+    'http://localhost:3000',
+    'http://192.168.0.200:3000'
+]
+
+CORS_ORIGIN_WHITELIST = (
+  'http://localhost:3000',
+  'http://192.168.0.200:3000'
+)
 
 TEMPLATES = [
     {
@@ -79,6 +128,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+## User model
+# AUTH_USER_MODEL = 'hairpro.AppUser'
 
 
 # Password validation
@@ -119,5 +171,3 @@ STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

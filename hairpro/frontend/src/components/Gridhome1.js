@@ -21,7 +21,7 @@ import { Pagination } from 'swiper/modules';
 
 function Gridhome1() {
     // alert('in')
-    const { events } = useContext(AppContext);
+    const { randomutility } = useContext(AppContext);
 
     const [show, setShow] = useState(false);
     const [hidden, setHidden] = useState(true);
@@ -145,7 +145,7 @@ function Gridhome1() {
                                         end: 'prev,next', // will normally be on the right. if RTL, will be on the left
                                     }
                                 }
-                                events={events}
+                                events={randomutility}
                                 eventClick={(info) => {
                                     setTitle(info.event.title);
                                     setHour(info.event.start.getHours());

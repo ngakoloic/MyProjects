@@ -10,7 +10,7 @@ import { AppContext } from '../reducers/AppContext';
 const Calender = () => {
 
     //const events = useSelector(state => state.teamevent);
-    const { events } = useContext(AppContext);
+    const { randomutility } = useContext(AppContext);
 
     const [show, setShow] = useState(false);
     const [title, setTitle] = useState('');
@@ -34,7 +34,7 @@ const Calender = () => {
                         end: 'prev,next', // will normally be on the right. if RTL, will be on the left
                     }
                 }
-                events={events}
+                events={randomutility}
                 eventClick={(el) => {
                     setTitle(el.event.title);
                     setHour(el.event.start.getHours());

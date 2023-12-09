@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Form, Row, Col, Image, Button } from 'react-bootstrap';
 import { BsHandThumbsUpFill, BsShopWindow } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +8,18 @@ import Iconbutton from '../components/Iconbutton';
 
 const CoverPage = () => {
     const navigate = useNavigate();
+    // useEffect(() => {
+    //     fetchData()
+    // }, [])
+    // const fetchData = async () => {
+    //     try {
+    //         const response = await axios.get("http://localhost:8000/api/hairpro"
+    //         );
+    //         console.log(response);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
     const [modalFormShow, SetModalFormShow] = useState(false);
     return (
         <div className='container' id='scrollup'>
@@ -107,4 +120,4 @@ const CoverPage = () => {
         </div>
     );
 };
-export default CoverPage;
+export default CoverPage; 

@@ -1,10 +1,38 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Alert, Button, Form, Modal, Image } from 'react-bootstrap';
+import { register, handleForm, data, getCookie } from '../data/functions';
+import { AppContext } from '../reducers/AppContext';
+import axios from 'axios';
+// import { login } from '../data/functions';
+
+axios.defaults.withCredentials = true;
+const client = axios.create({
+    baseURL: "http://localhost:8000/"
+})
 
 import FormRegister from './FormRegister';
 
 const Formconnect = (props) => {
+
+    const { dispatch } = useContext(AppContext);
     const [modalFormRegister, SetModalFormRegister] = useState(false);
+
+    const submitLogin = (data) => {
+        client.post('api/login/', data,
+            {
+                headers: { "X-CSRFToken": getCookie('csrftoken') },
+            }
+        ).then((res) => {
+            console.log(res.data);
+            dispatch({
+                type: 'USER-CONNECT'
+            });
+        }).catch((err) => {
+            dispatch({
+                type: 'USER-CONNECT-NOT'
+            });
+        })
+    }
 
     return (
         <>
@@ -22,13 +50,13 @@ const Formconnect = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" />
+                        <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control type="text" name="username" placeholder="Enter your name" onChange={(e) => handleForm(e)} />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label>Enter your password</Form.Label>
-                            <Form.Control type="password" placeholder="Your password" />
+                            <Form.Control type="password" name="password" placeholder="Your password" onChange={(e) => handleForm(e)} />
                         </Form.Group>
                     </Form>
                     <p>
@@ -40,7 +68,7 @@ const Formconnect = (props) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={props.onHide} variant="danger">Cancel</Button>
-                    <Button onClick={props.onHide}>Sign in</Button>
+                    <Button onClick={() => submitLogin(data)}>Sign in</Button>
                 </Modal.Footer>
             </Modal>
             <Modal
@@ -62,7 +90,7 @@ const Formconnect = (props) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => SetModalFormRegister(false)} variant="danger">Cancel</Button>
-                    <Button>Submit</Button>
+                    <Button onClick={() => register(data)}>Submit</Button>
                 </Modal.Footer>
 
             </Modal>
