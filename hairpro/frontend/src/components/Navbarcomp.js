@@ -42,7 +42,7 @@ const Mynavbar = () => {
         headers: { "X-CSRFToken": getCookie('csrftoken') },
       }
     ).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       dispatch({
         type: 'USER-CONNECT-NOT'
       });
@@ -93,14 +93,17 @@ const Mynavbar = () => {
                 <NavDropdown
                   title='Account'
                   id={`offcanvasNavbarDropdown-expand-lg`}
-
                 >
-                  <NavDropdown.Item href="/my-profile"
-                  >My profile</NavDropdown.Item>
+                  {
+                    (randomutility) ? <NavDropdown.Item href="/my-profile">My profile</NavDropdown.Item> : ''
+                  }
                   {
                     (randomutility) ? <NavDropdown.Item onClick={() => submitLogout()}>Logout</NavDropdown.Item> : <NavDropdown.Item onClick={() => SetModalFormShow(true)}>Login</NavDropdown.Item>
                   }
                 </NavDropdown>
+                {/* {
+                  <div id='user-hi'><i>Hi !</i></div>
+                } */}
               </Nav>
               {/* <Form className="d-flex">
               <Form.Control

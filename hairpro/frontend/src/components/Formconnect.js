@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { Alert, Button, Form, Modal, Image } from 'react-bootstrap';
+import { Alert, Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { register, handleForm, data, getCookie } from '../data/functions';
 import { AppContext } from '../reducers/AppContext';
 import axios from 'axios';
-// import { login } from '../data/functions';
 
 axios.defaults.withCredentials = true;
 const client = axios.create({
@@ -14,23 +13,31 @@ import FormRegister from './FormRegister';
 
 const Formconnect = (props) => {
 
-    const { dispatch } = useContext(AppContext);
+    const { dispatch, randomutility } = useContext(AppContext);
     const [modalFormRegister, SetModalFormRegister] = useState(false);
 
     const submitLogin = (data) => {
+        document.getElementById('loading').style.display = 'block';
         client.post('api/login/', data,
             {
                 headers: { "X-CSRFToken": getCookie('csrftoken') },
             }
         ).then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
             dispatch({
                 type: 'USER-CONNECT'
             });
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+            }, 3000);
         }).catch((err) => {
             dispatch({
                 type: 'USER-CONNECT-NOT'
             });
+            document.getElementById('loading').innerHTML = '<div class="alert alert-danger" role="alert">Oups an error occur!</div>';
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+            }, 3000);
         })
     }
 
@@ -58,6 +65,11 @@ const Formconnect = (props) => {
                             <Form.Label>Enter your password</Form.Label>
                             <Form.Control type="password" name="password" placeholder="Your password" onChange={(e) => handleForm(e)} />
                         </Form.Group>
+                        <div id="loading" style={{ display: 'none', textAlign: 'center' }}>
+                            {
+                                (randomutility) ? <Alert variant='success' style={{ textAlign: 'center' }}>Welcome {data.username}</Alert> : <Spinner animation="border" />
+                            }
+                        </div>
                     </Form>
                     <p>
                         Don't have an account?&nbsp;
@@ -67,7 +79,7 @@ const Formconnect = (props) => {
                     </p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={props.onHide} variant="danger">Cancel</Button>
+                    <Button onClick={props.onHide} variant="danger">Close</Button>
                     <Button onClick={() => submitLogin(data)}>Sign in</Button>
                 </Modal.Footer>
             </Modal>

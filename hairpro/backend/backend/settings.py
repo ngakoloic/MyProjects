@@ -96,8 +96,8 @@ CORS_ORIGIN_ORIGINS = [
 ]
 
 CORS_ORIGIN_WHITELIST = (
-  'http://localhost:3000',
-  'http://192.168.0.200:3000'
+    'http://localhost:3000',
+    'http://192.168.0.200:3000'
 )
 
 TEMPLATES = [

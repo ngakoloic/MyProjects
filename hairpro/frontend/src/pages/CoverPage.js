@@ -33,8 +33,9 @@ const CoverPage = () => {
                 paddingTop: '30px'
             }}>
                 <Button variant="success" onClick={() => navigate('/create-my-business')}>Create your Business &nbsp; <BsShopWindow /></Button>
-                <h4>Or</h4>
+                {/* <h4>Or</h4>
                 <Button variant="outline-success" onClick={() => SetModalFormShow(true)}>Sign In</Button>
+                <br /> */}
                 <br />
                 <center><h3>find your barbershop</h3></center>
                 <div style={{
@@ -116,7 +117,7 @@ const CoverPage = () => {
                 <a href="/home">Go to home page</a>
             </div>
             <Iconbutton></Iconbutton>
-            <Formconnect show={modalFormShow} onHide={() => SetModalFormShow(false)}></Formconnect>
+            {/* <Formconnect show={modalFormShow} onHide={() => SetModalFormShow(false)}></Formconnect> */}
         </div>
     );
 };
