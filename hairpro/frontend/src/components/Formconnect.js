@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Alert, Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { register, handleForm, data, getCookie } from '../data/functions';
 import { AppContext } from '../reducers/AppContext';
+import FormRegister from './FormRegister';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -9,12 +10,11 @@ const client = axios.create({
     baseURL: "http://localhost:8000/"
 })
 
-import FormRegister from './FormRegister';
-
 const Formconnect = (props) => {
 
     const { dispatch, randomutility } = useContext(AppContext);
     const [modalFormRegister, SetModalFormRegister] = useState(false);
+    const [username, SetUsername] = useState();
 
     const submitLogin = (data) => {
         document.getElementById('loading').style.display = 'block';
@@ -27,9 +27,16 @@ const Formconnect = (props) => {
             dispatch({
                 type: 'USER-CONNECT'
             });
-            setTimeout(() => {
-                document.getElementById('loading').style.display = 'none';
-            }, 3000);
+            sessionStorage.setItem("id", res.data[1]);
+            sessionStorage.setItem("user", res.data[0]);
+            // console.log(sessionStorage.getItem('id'));
+            SetUsername(res.data[0]);
+            // client.get('api/user-detail/').then((response) => {
+            //     console.log(response.data);
+            // }).catch((err) => console.log(err))
+            // setTimeout(() => {
+            //     document.getElementById('loading').style.display = 'none';
+            // }, 3000);
         }).catch((err) => {
             dispatch({
                 type: 'USER-CONNECT-NOT'
@@ -67,7 +74,7 @@ const Formconnect = (props) => {
                         </Form.Group>
                         <div id="loading" style={{ display: 'none', textAlign: 'center' }}>
                             {
-                                (randomutility) ? <Alert variant='success' style={{ textAlign: 'center' }}>Welcome {data.username}</Alert> : <Spinner animation="border" />
+                                (randomutility) ? <Alert variant='success' style={{ textAlign: 'center' }}>Welcome {username}</Alert> : <Spinner animation="border" />
                             }
                         </div>
                     </Form>

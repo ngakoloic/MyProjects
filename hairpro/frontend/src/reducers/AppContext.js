@@ -1,21 +1,23 @@
 //reducers
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useReducer, useState } from 'react';
 import { combineReducers } from 'redux';
 import { initialEvents } from '../data/functions'; //Evenements initialles qui se chargent au lancement de l'App
 
+
 const randomutility = (state = [], action) => {
+    // const [iduser, SetIduser] = useState();
     switch (action.type) {
         case 'SELECT-BARBER':
-            state = [action.event]; //Encapsuler dans une [] pour pouvoir l'utiliser dans le calendrier
+            state = { 'event': [action.event], 'id': sessionStorage['id'] }; //Encapsuler dans une [] pour pouvoir l'utiliser dans le calendrier
             return state;
         case 'SELECT-ALL-BARBER':
-            state = initialEvents();
+            state = { 'event': initialEvents(), 'id': sessionStorage['id'] };
             return state;
         case 'USER-CONNECT':
-            state = true;
+            state = { 'event': initialEvents(), 'id': sessionStorage['id'] };
             return state;
         case 'USER-CONNECT-NOT':
-            state = false;
+            state = { 'event': initialEvents(), 'id': sessionStorage['id'] };
             return state;
         default:
             state = initialEvents();
@@ -34,6 +36,7 @@ export const AppContext = createContext(null);
 export const AppProvider = (props) => {
     //state prend la valeur initialle par defaut et dispatch s'occupe de l'action a effectuer a travers une fonction bien definit
     const [state, dispatch] = useReducer(randomutility, initialEvents());
+
     return (
         <AppContext.Provider
             value={{

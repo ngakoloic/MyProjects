@@ -18,6 +18,7 @@ import 'swiper/css/pagination';
 
 // import required modules
 import { Pagination } from 'swiper/modules';
+import Calender from './Calender';
 
 function Gridhome1() {
     // alert('in')
@@ -133,7 +134,8 @@ function Gridhome1() {
                         <div className='py-3'>
                             <Teams></Teams>
                             <div style={{ marginBottom: 15 + 'px' }}></div>
-                            <Fullcalendar
+                            <Calender></Calender>
+                            {/* <Fullcalendar
                                 plugins={[dayGridPlugin, timeGridplugin, interactionPlugin]}
                                 selectable={true}
                                 initialView='timeGridWeek'
@@ -169,10 +171,11 @@ function Gridhome1() {
                                         }
                                     ]
                                 }
-                            />
+                            /> */}
                         </div>
-                        <h5>You selected <b>{title}</b> at <i>{start}</i></h5>
-                        <Formappointment hidden={hidden}></Formappointment>
+                        {/* <h5>You selected <b>{title}</b> at <i>{start}</i></h5>
+                        <Formappointment hidden={hidden}></Formappointment> */}
+                        <div style={{ marginBottom: 15 + 'px' }}></div>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer hidden={hidden}>

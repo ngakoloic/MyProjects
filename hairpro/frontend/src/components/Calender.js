@@ -9,7 +9,6 @@ import { AppContext } from '../reducers/AppContext';
 
 const Calender = () => {
 
-    //const events = useSelector(state => state.teamevent);
     const { randomutility } = useContext(AppContext);
 
     const [show, setShow] = useState(false);
@@ -19,13 +18,16 @@ const Calender = () => {
     const [min, setMin] = useState('');
 
     const handleClose = () => setShow(false);
-
     return (
         <div className='contain-calendar'>
             <Fullcalendar
                 plugins={[dayGridPlugin, timeGridplugin, interactionPlugin]}
                 selectable={true}
                 initialView='timeGridWeek'
+                height={500}
+                allDaySlot={false}
+                slotMinTime="08:00:00"
+                slotMaxTime="22:00:00"
                 headerToolbar={
                     {
                         start: 'today', // will normally be on the left. if RTL, will be on the right
@@ -34,7 +36,7 @@ const Calender = () => {
                         end: 'prev,next', // will normally be on the right. if RTL, will be on the left
                     }
                 }
-                events={randomutility}
+                events={randomutility['event']}
                 eventClick={(el) => {
                     setTitle(el.event.title);
                     setHour(el.event.start.getHours());
@@ -56,8 +58,7 @@ const Calender = () => {
                             startTime: '10:30', // 8am
                             endTime: '15:00' // 6pm
                         }
-                    ]
-                }
+                    ]}
             />
             <Modal
                 show={show}

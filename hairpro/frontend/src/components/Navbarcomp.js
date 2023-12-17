@@ -5,6 +5,8 @@ import Formconnect from './Formconnect';
 import { getCookie } from '../data/functions';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../reducers/AppContext';
+import { Outlet, Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 // import { login } from '../data/functions';
@@ -17,6 +19,7 @@ const client = axios.create({
 const Mynavbar = () => {
   const { dispatch, randomutility } = useContext(AppContext);
   const [modalFormShow, SetModalFormShow] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     client.get('api/user/',
@@ -28,6 +31,7 @@ const Mynavbar = () => {
       dispatch({
         type: 'USER-CONNECT'
       });
+      sessionStorage.setItem('email', res.data['user']['email'])
     }).catch((err) => {
       dispatch({
         type: 'USER-CONNECT-NOT'
@@ -42,10 +46,13 @@ const Mynavbar = () => {
         headers: { "X-CSRFToken": getCookie('csrftoken') },
       }
     ).then((res) => {
-      // console.log(res.data);
+      sessionStorage.removeItem('id');
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('email');
       dispatch({
         type: 'USER-CONNECT-NOT'
       });
+      navigate('/home')
     }).catch((err) => {
       console.log(err);
     })
@@ -66,7 +73,7 @@ const Mynavbar = () => {
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
-                Offcanvas
+                Menu
               </Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
@@ -95,10 +102,10 @@ const Mynavbar = () => {
                   id={`offcanvasNavbarDropdown-expand-lg`}
                 >
                   {
-                    (randomutility) ? <NavDropdown.Item href="/my-profile">My profile</NavDropdown.Item> : ''
+                    (randomutility)['id'] ? <NavDropdown.Item href="/My-profile">My profile <i>({(sessionStorage.getItem('user'))})</i></NavDropdown.Item> : ''
                   }
                   {
-                    (randomutility) ? <NavDropdown.Item onClick={() => submitLogout()}>Logout</NavDropdown.Item> : <NavDropdown.Item onClick={() => SetModalFormShow(true)}>Login</NavDropdown.Item>
+                    (randomutility)['id'] ? <NavDropdown.Item onClick={() => submitLogout()}>Logout</NavDropdown.Item> : <NavDropdown.Item onClick={() => SetModalFormShow(true)}>Login</NavDropdown.Item>
                   }
                 </NavDropdown>
                 {/* {
