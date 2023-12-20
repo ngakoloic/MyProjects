@@ -33,6 +33,7 @@ urlpatterns = [
     path('user/', views.UserView.as_view(), name='user'),
     path('user/<int:id>/', views.UserDetail.as_view(), name='user-detail'),
     path('user/change/', views.UserUpdate.as_view(), name='user-detail-update'),
+    path('store/', views.StoreView.as_view(), name='stores'),
 ]
 
 # urlpatterns += router.urls

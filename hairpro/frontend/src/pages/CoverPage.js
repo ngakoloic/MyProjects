@@ -5,21 +5,29 @@ import { BsHandThumbsUpFill, BsShopWindow } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import Formconnect from '../components/Formconnect';
 import Iconbutton from '../components/Iconbutton';
+import LoadingButton from '../components/Iconbutton';
+import { getCookie } from '../data/functions';
+
+axios.defaults.withCredentials = true;
+const client = axios.create({
+    baseURL: "http://localhost:8000/"
+})
 
 const CoverPage = () => {
     const navigate = useNavigate();
-    // useEffect(() => {
-    //     fetchData()
-    // }, [])
-    // const fetchData = async () => {
-    //     try {
-    //         const response = await axios.get("http://localhost:8000/api/hairpro"
-    //         );
-    //         console.log(response);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
+    const [store, SetStore] = useState([]);
+    useEffect(() => {
+        client.get('api/store/',
+            { withCredentials: true },
+            {
+                headers: { "X-CSRFToken": getCookie('csrftoken') },
+            }
+        ).then((res) => {
+            SetStore(res.data)
+        }).catch((err) => {
+            console.error(err)
+        })
+    }, [])
     const [modalFormShow, SetModalFormShow] = useState(false);
     return (
         <div className='container' id='scrollup'>
@@ -67,51 +75,23 @@ const CoverPage = () => {
                 </div>
                 <div className="list-barber">
                     <Row xs={1} md={2} lg={3}>
-                        <Col className='item' id='1' onClick={() => navigate('/home')}>
-                            <div id="barbershop-img">
-                                <Image src='./img/coupe-homme.jpg' width="80px" height="80px" />
-                            </div>
-                            <div className="details">
-                                <div id='title'><b>Marks Pro</b></div>
-                                <div id='adr'><b>Adresse : </b><span>40 Donald avenue, Moncton</span></div>
-                                <div id='statut'>
-                                    <div><b>Now : </b><i>Open</i></div>
-                                    <div id='stars'>
-                                        <BsHandThumbsUpFill />&nbsp;{'100'}
+                        {store.map((store, i) =>
+                            <Col className='item' id={store.id} key={i} onClick={() => navigate('/home')}>
+                                <div id="barbershop-img">
+                                    <Image src={store.image} width="80px" height="80px" />
+                                </div>
+                                <div className="details">
+                                    <div id='title'><b>{store.name}</b></div>
+                                    <div id='adr'><b>Adresse : </b><span>{store.adress}</span></div>
+                                    <div id='statut'>
+                                        <div><b>Now : </b><i>{store.status}</i></div>
+                                        <div id='stars'>
+                                            <BsHandThumbsUpFill />&nbsp;{store.like}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </Col>
-                        <Col className='item' id='1'>
-                            <div id="barbershop-img">
-                                <Image src='./img/coupe-homme.jpg' width="80px" height="80px" />
-                            </div>
-                            <div className="details">
-                                <div id='title'><b>Marks Pro</b></div>
-                                <div id='adr'><b>Adresse : </b><span>40 Donald avenue, Moncton</span></div>
-                                <div id='statut'>
-                                    <div><b>Now : </b><i>Open</i></div>
-                                    <div id='stars'>
-                                        <BsHandThumbsUpFill />&nbsp;{'100'}
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
-                        <Col className='item' id='1' >
-                            <div id="barbershop-img">
-                                <Image src='./img/coupe-homme.jpg' width="80px" height="80px" />
-                            </div>
-                            <div className="details">
-                                <div id='title'><b>Marks Pro</b></div>
-                                <div id='adr'><b>Adresse : </b><span>40 Donald avenue, Moncton</span></div>
-                                <div id='statut'>
-                                    <div><b>Now : </b><i>Open</i></div>
-                                    <div id='stars'>
-                                        <BsHandThumbsUpFill />&nbsp;{'100'}
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
+                            </Col>
+                        )}
                     </Row>
                 </div>
                 <a href="/home">Go to home page</a>

@@ -4,9 +4,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status, viewsets
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer, UserDetailSerializer
-from .serializers import UserUpdateSerializer, UserUpdateUserNameSerializer, UserUpdateEmailSerializer, UserUpdateEmailUsernameSerializer, UserUpdateImageSerializer
+from .serializers import UserUpdateSerializer, UserUpdateUserNameSerializer, UserUpdateEmailSerializer
+from .serializers import UserUpdateEmailUsernameSerializer, UserUpdateImageSerializer, StoreSerializer
 from django.views.decorators.csrf import csrf_exempt
-from .models import DetailUser
+from .models import DetailUser, Store
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 from rest_framework import generics
@@ -26,7 +27,7 @@ class UserRegister(APIView):
 
 class UserLogin(APIView):
     permission_classes = (permissions.AllowAny,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
@@ -109,3 +110,10 @@ class UserUpdate(APIView):
             if user:
                 return Response(serializer_5.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class StoreView(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    ##
+    serializer_class = StoreSerializer
+    def get_queryset(self):
+        return Store.objects.all()

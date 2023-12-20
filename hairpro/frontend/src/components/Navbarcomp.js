@@ -7,9 +7,8 @@ import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../reducers/AppContext';
 import { Outlet, Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-
-import axios from 'axios';
 // import { login } from '../data/functions';
+import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 const client = axios.create({
@@ -102,10 +101,13 @@ const Mynavbar = () => {
                   id={`offcanvasNavbarDropdown-expand-lg`}
                 >
                   {
-                    (randomutility)['id'] ? <NavDropdown.Item href="/My-profile">My profile <i>({(sessionStorage.getItem('user'))})</i></NavDropdown.Item> : ''
+                    (randomutility)['id'] ? <NavDropdown.Item href="/my-profile">My profile <i>({(sessionStorage.getItem('user'))})</i></NavDropdown.Item> : ''
                   }
                   {
                     (randomutility)['id'] ? <NavDropdown.Item onClick={() => submitLogout()}>Logout</NavDropdown.Item> : <NavDropdown.Item onClick={() => SetModalFormShow(true)}>Login</NavDropdown.Item>
+                  }
+                  {
+                    (randomutility)['id'] ? <NavDropdown.Item href="/manage"><i>Manage</i></NavDropdown.Item> : ''
                   }
                 </NavDropdown>
                 {/* {

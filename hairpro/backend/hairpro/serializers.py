@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse, JsonResponse
 
-from .models import DetailUser
+from .models import DetailUser, Store
 from django.contrib.auth.models import User
 
 # UserModel = django.contrib.auth.get_user_model()
@@ -95,3 +95,8 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         user_obj.image = data['image']
         user_obj.save()
         return user_obj
+
+class StoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Store
+        fields = '__all__'

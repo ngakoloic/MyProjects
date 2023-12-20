@@ -6,6 +6,7 @@ import { AppProvider } from './reducers/AppContext'; //Composant de notre Contex
 import Profile from './pages/Profile';
 import CoverPage from './pages/CoverPage';
 import CreateBusiness from './pages/CreateBusiness';
+import Manage from './pages/Manage';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route exact path='/create-my-business' element={<CreateBusiness title={'Business checkout'} />}></Route>
           <Route exact path='/about' element={<About title={'About us'} />}></Route>
           <Route exact path='/my-profile' element={<Profile title={'My Profile'} />}></Route>
+          <Route exact path='/manage' element={<Manage title={'Manage'} />}></Route>
           <Route exact path='*' element={<Home />}></Route>
         </Routes>
       </BrowserRouter>
