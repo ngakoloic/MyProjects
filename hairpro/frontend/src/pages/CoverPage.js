@@ -28,6 +28,13 @@ const CoverPage = () => {
             console.error(err)
         })
     }, [])
+    const openStore = (id) => {
+        sessionStorage.setItem('store', id);
+        setTimeout(() => {
+            navigate('/home')
+        }, 1000);
+        return id
+    }
     const [modalFormShow, SetModalFormShow] = useState(false);
     return (
         <div className='container' id='scrollup'>
@@ -50,7 +57,7 @@ const CoverPage = () => {
                     borderBottom: '1px solid #eaeaea',
                     marginBottom: '15px'
                 }}>
-                    <Form.Group as={Row} className="mb-3" controlId="formSelectRegion">
+                    {/* <Form.Group as={Row} className="mb-3" controlId="formSelectRegion">
                         <Form.Label column sm="5">Regions : </Form.Label>
                         <Col sm="7">
                             <Form.Select size="sm">
@@ -60,7 +67,7 @@ const CoverPage = () => {
                                 <option value="3">Ontario</option>
                             </Form.Select>
                         </Col>
-                    </Form.Group>
+                    </Form.Group> */}
                     <Form.Group as={Row} className="mb-3" controlId="formSelectTown">
                         <Form.Label column sm="5">Towns : </Form.Label>
                         <Col sm="7">
@@ -76,7 +83,7 @@ const CoverPage = () => {
                 <div className="list-barber">
                     <Row xs={1} md={2} lg={3}>
                         {store.map((store, i) =>
-                            <Col className='item' id={store.id} key={i} onClick={() => navigate('/home')}>
+                            <Col className='item' id={store.id} key={i} onClick={() => openStore(store.id)}>
                                 <div id="barbershop-img">
                                     <Image src={store.image} width="80px" height="80px" />
                                 </div>

@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Image } from 'react-bootstrap';
 import teamschedule from '../actions';
 import { AppContext } from '../reducers/AppContext';
+import axios from 'axios';
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -12,8 +13,28 @@ import 'swiper/css/pagination';
 
 // import required modules
 import { Pagination } from 'swiper/modules';
+import { getCookie } from '../data/functions';
+
+const client = axios.create({
+    baseURL: "http://localhost:8000/"
+})
 
 const Teams = () => {
+    const [users, SetUsers] = useState([]);
+    useEffect(() => {
+        client.get('api/store/team/',
+            { withCredentials: true },
+            {
+                headers: { "X-CSRFToken": getCookie('csrftoken') },
+            }
+        ).then((res) => {
+            // console.log(res)
+            SetUsers(res.data)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }, [])
+
     const { dispatch } = useContext(AppContext);
     return (
         <div className='our-teams'>
@@ -29,42 +50,15 @@ const Teams = () => {
                 modules={[Pagination]}
             // className="mySwiper-1"
             >
-                <SwiperSlide>
-                    <div className='item'><Image onClick={(event) => {
-                        const e = event.target;
-                        const id = e.id;
-                        dispatch(teamschedule(id));
-                    }} id='1' src="img/coupe-homme.jpg" width="100px" height="100px" />
-                        <span id='team-name'>Loic1 Stars</span>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <div className='item'><Image onClick={(event) => {
-                        const e = event.target;
-                        const id = e.id;
-                        dispatch(teamschedule(id));
-                    }} id='2' src="img/coupe-homme.jpg" width="100px" height="100px" />
-                        <span id='team-name'>Loic2 Stars</span>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <div className='item'><Image onClick={(event) => {
-                        const e = event.target;
-                        const id = e.id;
-                        dispatch(teamschedule(id));
-                    }} id='3' src="img/coupe-homme.jpg" width="100px" height="100px" />
-                        <span id='team-name'>Loic3 Stars</span>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <div className='item'><Image onClick={(event) => {
-                        const e = event.target;
-                        const id = e.id;
-                        dispatch(teamschedule(id));
-                    }} id='1' src="img/coupe-homme.jpg" width="100px" height="100px" />
-                        <span id='team-name'>Loic4 Stars</span>
-                    </div>
-                </SwiperSlide>
+                {users.map((user, i) =>
+                    <SwiperSlide key={i}>
+                        <div className='item'><Image onClick={() => {
+                            dispatch(teamschedule(user.id));
+                        }} id={user.id} src={user.image} width="100px" height="100px" />
+                            <span id='team-name'>{user.pseudo}</span>
+                        </div>
+                    </SwiperSlide>
+                )}
             </Swiper>
             <Button onClick={() => {
                 dispatch({

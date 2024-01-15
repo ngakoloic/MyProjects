@@ -3,24 +3,24 @@ import React, { createContext, useReducer, useState } from 'react';
 import { combineReducers } from 'redux';
 import { initialEvents } from '../data/functions'; //Evenements initialles qui se chargent au lancement de l'App
 
-
 const randomutility = (state = [], action) => {
     // const [iduser, SetIduser] = useState();
     switch (action.type) {
         case 'SELECT-BARBER':
-            state = { 'event': [action.event], 'id': sessionStorage['id'] }; //Encapsuler dans une [] pour pouvoir l'utiliser dans le calendrier
+            state = { 'event': [action.event][0], 'id': sessionStorage['id'] }; //Encapsuler dans une [] pour pouvoir l'utiliser dans le calendrier
             return state;
         case 'SELECT-ALL-BARBER':
             state = { 'event': initialEvents(), 'id': sessionStorage['id'] };
             return state;
         case 'USER-CONNECT':
             state = { 'event': initialEvents(), 'id': sessionStorage['id'] };
+            // state = { 'id': sessionStorage['id'] };
             return state;
         case 'USER-CONNECT-NOT':
             state = { 'event': initialEvents(), 'id': sessionStorage['id'] };
             return state;
         default:
-            state = initialEvents();
+            state = { 'event': initialEvents(), 'id': sessionStorage['id'] };
             return state;
     }
 }

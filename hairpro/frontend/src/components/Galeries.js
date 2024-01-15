@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { getCookie } from '../data/functions';
 
 // import Swiper core and required modules
 import { EffectCoverflow, Pagination } from 'swiper/modules';
@@ -9,7 +11,26 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+axios.defaults.withCredentials = true;
+const client = axios.create({
+    baseURL: "http://localhost:8000/"
+})
+
 const Galeries = () => {
+    const [galeries, SetGaleries] = useState([]);
+
+    useEffect(() => {
+        client.get('api/store/galerie/',
+            { withCredentials: true },
+            {
+                headers: { "X-CSRFToken": getCookie('csrftoken') },
+            }
+        ).then((res) => {
+            SetGaleries(res.data)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }, [])
     return (
         <Swiper
             style={{
@@ -34,33 +55,11 @@ const Galeries = () => {
             modules={[EffectCoverflow, Pagination]}
         // className='mySwiper-2'
         >
-            <SwiperSlide>
-                <img src="img/coupe-homme.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-                <img src="img/coupe-homme.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-                <img src="img/coupe-homme.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-                <img src="img/coupe-homme.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-                <img src="img/coupe-homme.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-                <img src="img/coupe-homme.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-                <img src="img/coupe-homme.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-                <img src="img/coupe-homme.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-                <img src="img/coupe-homme.jpg" />
-            </SwiperSlide>
+            {galeries.map((galerie, i) =>
+                <SwiperSlide>
+                    <img src={galerie.image} width={'300px'} height={'350px'} />
+                </SwiperSlide>
+            )}
         </Swiper>
     );
 };

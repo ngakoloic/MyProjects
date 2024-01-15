@@ -13,12 +13,12 @@ const App = () => {
     <AppProvider>
       <BrowserRouter>
         <Routes>
-          <Route exact path='/' element={<CoverPage />}></Route>
-          <Route exact path='/home' element={<Home />}></Route>
+          {/* <Route exact path='/' element={<CoverPage />}></Route> */}
+          <Route exact path='/' element={<Home />}></Route>
           <Route exact path='/create-my-business' element={<CreateBusiness title={'Business checkout'} />}></Route>
           <Route exact path='/about' element={<About title={'About us'} />}></Route>
           <Route exact path='/my-profile' element={<Profile title={'My Profile'} />}></Route>
-          <Route exact path='/manage' element={<Manage title={'Manage'} />}></Route>
+          <Route exact path='/dashboard' element={<Manage title={'Dashboard'} />}></Route>
           <Route exact path='*' element={<Home />}></Route>
         </Routes>
       </BrowserRouter>

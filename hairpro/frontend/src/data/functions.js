@@ -1,4 +1,5 @@
 import axios from 'axios';
+import imageCompression from 'browser-image-compression';
 // import { useState } from 'react';
 
 // export const [stateComp, SetStateComp] = useState();
@@ -46,46 +47,35 @@ export const backgroundImage = {
 }
 
 // Liste des evenements
-export const listevents = [
-    {
-        '1': {
-            id: 1,
-            title: 'event 1',
-            start: '2023-12-12T08:30:00',
-            end: '2023-12-12T10:00:00',
-            display: 'block',
-        },
-        '2': {
-            id: 3,
-            title: 'event 3',
-            start: '2023-12-16T12:00:00',
-            end: '2023-12-16T15:00:00',
-            display: 'block',
-        },
-        '3': {
-            id: 2,
-            title: 'event 2',
-            start: '2023-12-15T08:30:00',
-            end: '2023-12-15T10:00:00',
-            display: 'block',
-        }
-    }
-]
+export let listevents = []
 
 export const initialEvents = () => {
-    let keys = Object.keys(listevents[0]);
-    let state = [];
-    for (let i = 1; i <= keys.length; i++) {
-        state.push(listevents[0][i]);
-    }
-    return state;
+    let tab = [];
+    client.get('api/store/schedule/',
+        { withCredentials: true },
+        {
+            headers: { "X-CSRFToken": getCookie('csrftoken') },
+        }
+    ).then((res) => {
+        tab = res.data;
+        // console.log(tab)
+        listevents.push(tab)
+    }).catch((err) => {
+        console.log(err);
+        return false
+    })
+    return listevents[0];
 }
 
 export const register = (data) => {
-
+    document.getElementById('loading_2').style.display = 'block';
     client.post('api/register/', data
     ).then((res) => {
         console.log(res.data)
+        document.getElementById('loading_2').innerHTML = '<div class="alert alert-success" role="alert">Done!</div>';
+        setTimeout(() => {
+            document.getElementById('loading_2').style.display = 'none';
+        }, 3000);
     }).catch((err) => {
         console.log(err)
     })

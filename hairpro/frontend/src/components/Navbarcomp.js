@@ -1,10 +1,10 @@
-import { Button, Container, Form, Nav, Navbar, NavDropdown, Offcanvas, Image } from 'react-bootstrap';
+import { AppContext } from '../reducers/AppContext';
+import { Container, Form, Nav, Navbar, NavDropdown, Offcanvas, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BsPersonCircle } from 'react-icons/bs';
 import Formconnect from './Formconnect';
 import { getCookie } from '../data/functions';
 import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../reducers/AppContext';
+
 import { Outlet, Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 // import { login } from '../data/functions';
@@ -92,9 +92,9 @@ const Mynavbar = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
                 <Nav.Link href="/about">About us</Nav.Link>
-                <Nav.Link href="/#section-schedule">Appointment</Nav.Link>
-                <Nav.Link href="/#section-galeries">Galeries</Nav.Link>
-                <Nav.Link href="/#section-testimonies">Testimonies</Nav.Link>
+                <Nav.Link href="#section-schedule">Appointment</Nav.Link>
+                <Nav.Link href="#section-galeries">Galeries</Nav.Link>
+                <Nav.Link href="#section-testimonies">Testimonies</Nav.Link>
                 <Nav.Link href="#section-contact">Contact</Nav.Link>
                 <NavDropdown
                   title='Account'
@@ -107,7 +107,7 @@ const Mynavbar = () => {
                     (randomutility)['id'] ? <NavDropdown.Item onClick={() => submitLogout()}>Logout</NavDropdown.Item> : <NavDropdown.Item onClick={() => SetModalFormShow(true)}>Login</NavDropdown.Item>
                   }
                   {
-                    (randomutility)['id'] ? <NavDropdown.Item href="/manage"><i>Manage</i></NavDropdown.Item> : ''
+                    (randomutility)['id'] ? <NavDropdown.Item href="/dashboard"><i>Dashboard</i></NavDropdown.Item> : ''
                   }
                 </NavDropdown>
                 {/* {

@@ -3,14 +3,17 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status, viewsets
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer, UserDetailSerializer
-from .serializers import UserUpdateSerializer, UserUpdateUserNameSerializer, UserUpdateEmailSerializer
-from .serializers import UserUpdateEmailUsernameSerializer, UserUpdateImageSerializer, StoreSerializer
+from .serializers import *
 from django.views.decorators.csrf import csrf_exempt
-from .models import DetailUser, Store
+from django.db.models import Count,Avg
+from .models import *
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 from rest_framework import generics
+import json
+from django.contrib.auth.models import User
+from django.utils.timezone import now
+import os
 
 
 # Create your views here.
@@ -65,11 +68,15 @@ class UserDetail(generics.ListAPIView):
         return DetailUser.objects.filter(id=id)
 
 class UserUpdate(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
+        try:
+            username = request.data['user']
+        except:
+            user = ''
         try:
             username = request.data['username']
         except:
@@ -80,6 +87,7 @@ class UserUpdate(APIView):
             email = ''
         try:
             image = request.data['image']
+            # pass
         except:
             image = ''
 
@@ -103,7 +111,8 @@ class UserUpdate(APIView):
             serializer_4 = UserUpdateImageSerializer(data=data)
             if serializer_4.is_valid(raise_exception=True):
                 serializer_4.update(data)
-                # return Response(serializer_4.data, status=status.HTTP_201_CREATED)
+                return Response(serializer_4.data, status=status.HTTP_201_CREATED)
+        
         serializer_5 = UserUpdateSerializer(data=data)
         if serializer_5.is_valid(raise_exception=True):
             user = serializer_5.update(data)
@@ -117,3 +126,234 @@ class StoreView(generics.ListAPIView):
     serializer_class = StoreSerializer
     def get_queryset(self):
         return Store.objects.all()
+
+class TeamView(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    ##
+    serializer_class = UserDetailSerializer
+    def get_queryset(self):
+        users = DetailUser.objects.filter(staff=1, is_barber=1)
+        return users
+
+class SearchUserView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def post(self, request):
+        data = request.data
+        pseudo = request.data['pseudo']
+        serializer_1 = SearchUserSerializer(data=data)
+        if serializer_1.is_valid(raise_exception=True):
+            items = DetailUser.objects.filter(pseudo__contains=pseudo, is_barber=1)
+            serializer_2 = SearchUserSerializer(items, many=True)
+            return Response(serializer_2.data, status=status.HTTP_200_OK)
+
+class ScheduleCreateView(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def post(self, request):
+        data = request.data
+        serializer = ScheduleCreateSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            schedule_obj = serializer.create(data)
+            if schedule_obj:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class ScheduleUserView(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    ##
+    serializer_class = ScheduleSerializer
+    def get_queryset(self):
+        id_user = self.kwargs['id_user']
+        schedule = Schedule.objects.filter(user_id=id_user)
+        return schedule
+
+class DeleteUserScheduleView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    serializer_class = ScheduleSerializer
+    def get_queryset(self):
+        id_schedule = self.kwargs['id_schedule']
+        schedule = Schedule.objects.filter(id=id_schedule)
+        schedule.delete()
+        return schedule
+
+class StoreGetScheduleView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    serializer_class = ScheduleSerializer
+    def get_queryset(self):
+        id_schedule = self.kwargs['id']
+        schedule = Schedule.objects.filter(id=id_schedule)
+        return schedule
+
+class StoreScheduleView(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    ##
+    serializer_class = ScheduleSerializer
+    def get_queryset(self):
+        schedule = Schedule.objects.filter(status=1)
+        return schedule
+
+class AppointmentCreateView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def post(self, request):
+        data = request.data
+        serializer = AppointmentCreateSerializer(data=data)
+        serializer_2 = ScheduleSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            appointment_obj = serializer.create(data)
+            if appointment_obj:
+                serializer_2.update(data)
+                return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class HairstyleView(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    ##
+    serializer_class = HairstyleSerializer
+    def get_queryset(self):
+        hairstyles = Hairstyle.objects.all().order_by('-id')
+        return hairstyles
+
+class GetHairstyleView(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    ##
+    serializer_class = HairstyleSerializer
+    def get_queryset(self):
+        id = self.kwargs['id']
+        hairstyles = Hairstyle.objects.filter(id=id)
+        return hairstyles
+
+class HairstyleCreateView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def post(self, request):
+        data = request.data
+        serializer = HairstyleCreateSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            hairstyle_obj = serializer.create(data)
+            if hairstyle_obj:
+                return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class HairstyleUpdateView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def post(self, request):
+        data = request.data
+        serializer = HairstyleUpdateSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.update(data)
+            if user:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class AppointmentDoneView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def post(self, request):
+        data = request.data
+        serializer = AppointmentDoneSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            appointment = serializer.update(data)
+            if appointment:
+                return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class HairstyleDeleteView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    serializer_class = HairstyleSerializer
+    def get_queryset(self):
+        id_hairstyle = self.kwargs['id_hairstyle']
+        hairstyle_obj = Hairstyle.objects.get(id=id_hairstyle)
+        image_path = hairstyle_obj.image.path
+        if os.path.exists(image_path):
+            os.remove(image_path)
+            hairstyle_obj.delete()
+        return hairstyle_obj, 200
+
+class RemoveUserTeamView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def post(self, request):
+        data = request.data
+        serializer = StaffSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            team_member_obj = serializer.removestaff(data)
+            if team_member_obj:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class AddUserTeamView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def post(self, request):
+        data = request.data
+        serializer = StaffSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            team_member_obj = serializer.addstaff(data)
+            if team_member_obj:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class AppointmentUserView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    serializer_class = AppointmentCreateSerializer
+    def get_queryset(self):
+        tab = []
+        id_user = self.kwargs['id_user']
+        appointment_obj = Appointment.objects.filter(schedule__user=id_user, status=0)
+        return appointment_obj
+
+class GalerieView(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    ##
+    serializer_class = GalerieSerializer
+    def get_queryset(self):
+        galerie_obj = Galerie.objects.all().order_by('-id')
+        return galerie_obj
+
+class GalerieCreateView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def post(self, request):
+        data = request.data
+        serializer = GalerieCreateSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            galerie_obj = serializer.create(data)
+            if galerie_obj:
+                return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class RemoveGalerieView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    serializer_class = GalerieCreateSerializer
+    def get_queryset(self):
+        id_image = self.kwargs['id']
+        galerie_obj = Galerie.objects.get(id=id_image)
+        image_path = galerie_obj.image.path
+        if os.path.exists(image_path):
+            os.remove(image_path)
+            galerie_obj.delete()
+        return galerie_obj, 200

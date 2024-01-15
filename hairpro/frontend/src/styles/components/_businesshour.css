@@ -26,3 +26,17 @@
     font-weight: bold;
     font-size: 0.8rem;
 }
+
+.our-teams img {
+    border-radius: 50%;
+    border: 5px solid #b9a036;
+}
+
+.our-teams #team-name {
+    background-color: #b9a036;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
