@@ -19,6 +19,9 @@ const randomutility = (state = [], action) => {
         case 'USER-CONNECT-NOT':
             state = { 'event': initialEvents(), 'id': sessionStorage['id'] };
             return state;
+        case 'USER-SCHEDULE-ADD':
+            state = { 'event': [action.event][0], 'id': sessionStorage['id'] };
+            return state;
         default:
             state = { 'event': initialEvents(), 'id': sessionStorage['id'] };
             return state;

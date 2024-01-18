@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import Mynavbar from '../components/Navbarcomp';
 import Headerpage from '../components/Headerpage';
-import { Accordion, Breadcrumb, Button, Col, Form, Image, InputGroup, ListGroup, Modal, Row, Spinner } from 'react-bootstrap';
+import { Accordion, Badge, Breadcrumb, Button, Card, Col, Form, Image, InputGroup, ListGroup, Modal, Row, Spinner } from 'react-bootstrap';
 import Iconbutton from '../components/Iconbutton';
 import Footer from '../components/Footer';
-import axios from 'axios';
-import { getCookie } from '../data/functions';
-import { BsCameraFill, BsHandThumbsUpFill, BsXLg } from 'react-icons/bs';
+import { client, getCookie, url } from '../data/functions';
+import { BsCameraFill, BsXLg } from 'react-icons/bs';
 import imageCompression from 'browser-image-compression';
+// import Swiper core and required modules
+import { EffectCoverflow, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-axios.defaults.withCredentials = true;
-const client = axios.create({
-    baseURL: "http://localhost:8000/"
-})
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import CalendarAddSchedule from '../components/CalendarAddSchedule';
 
 const Manage = (props) => {
-    const [timeList, SetTimeList] = useState([]);
     const [users, SetUsers] = useState([]);
     const [hairstyles, SetHairstyles] = useState([]);
     const [galeries, SetGaleries] = useState([]);
@@ -27,15 +29,18 @@ const Manage = (props) => {
     const [show_add_galerie, SetShow_add_galerie] = useState(false);
     const [show_galerie, SetShow_galerie] = useState(false);
     const [show_add_member, SetShow_add_member] = useState(false);
+    const [show_approved_testimonie, SetShow_approved_testimonie] = useState(false);
+    const [show_waiting_testimonie, SetShow_waiting_testimonie] = useState(false);
     const [pseudo, setPseudo] = useState();
     const [image, setImage] = useState();
     const [isbarber, setIsBarber] = useState();
-    const [image_add_hairstyle, SetImage_add_hairstyle] = useState('./img/coupe-homme.jpg');
-    const [image_add_galerie, SetImage_add_galerie] = useState('./img/coupe-homme.jpg');
+    const [image_add_hairstyle, SetImage_add_hairstyle] = useState('./img/default.jpg');
+    const [image_add_galerie, SetImage_add_galerie] = useState('./img/default.jpg');
     const [idSelectUser, setIdSelectUser] = useState();
     const [startDate, setStartDate] = useState();
     const [startTime, setStartTime] = useState();
-    const [endTime, setendTime] = useState();
+    const [endTime, setEndTime] = useState();
+    const [countWaiting, SetCountWaiting] = useState();
 
     const [name_view_hairstyle, setName_view_hairstyle] = useState();
     const [description_view_hairstyle, setDescription_view_hairstyle] = useState();
@@ -51,6 +56,15 @@ const Manage = (props) => {
     const [name_hairstyle, setName_hairstyle] = useState();
     const [description, setDescription] = useState();
 
+    const [facebook, setFacebook] = useState();
+    const [instagram, setInstagram] = useState();
+    const [youtube, setYoutube] = useState();
+    const [whatsapp, setWhatsapp] = useState();
+    const [store_name, setStore_name] = useState();
+    const [store_email, setStore_email] = useState();
+    const [store_contact, setStore_contact] = useState();
+    const [store_address, setStore_address] = useState();
+
     const [duration, setDuration] = useState(30);
 
     const handleClose = () => setShow(false);
@@ -59,7 +73,14 @@ const Manage = (props) => {
     const handleClose_add_galerie = () => SetShow_add_galerie(false);
     const handleClose_galerie = () => SetShow_galerie(false);
     const handleClose_add_member = () => SetShow_add_member(false);
-    const handleHidden = () => setHidden(true);
+    const handleClose_approved_testimonie = () => SetShow_approved_testimonie(false);
+    const handleClose_waiting_testimonie = () => SetShow_waiting_testimonie(false);
+
+    const [listtestimonie, SetListTestimonie] = useState([]);
+    const [waitingtestimonie, SetWaitingtestimonie] = useState([]);
+
+    let alldata = [];
+    let tab = [];
 
     useEffect(() => {
         client.get('api/store/team/',
@@ -92,8 +113,70 @@ const Manage = (props) => {
         }).catch((err) => {
             console.log(err)
         })
-
+        getTestimonies(1)
+        setTimeout(() => {
+            tab = []
+            getTestimonies(0)
+        }, 1000);
+        client.get('api/store/contact/',
+            { withCredentials: true },
+            {
+                headers: { "X-CSRFToken": getCookie('csrftoken') },
+            }
+        ).then((res) => {
+            setFacebook(res.data[0].facebook)
+            setInstagram(res.data[0].instagram)
+            setYoutube(res.data[0].youtube)
+            setWhatsapp(res.data[0].whatsapp)
+            setStore_name(res.data[0].name)
+            setStore_email(res.data[0].email)
+            setStore_contact(res.data[0].tel)
+            setStore_address(res.data[0].address)
+        }).catch((err) => {
+            console.log(err)
+        })
     }, [])
+    const getTestimonies = (num) => {
+        client.get('api/store/testimonie/' + num + '/',
+            { withCredentials: true },
+            {
+                headers: { "X-CSRFToken": getCookie('csrftoken') },
+            }
+        ).then((res) => {
+            res.data.map((data, i) => {
+                client.get('api/user/' + data.user + '/',
+                    { withCredentials: true },
+                    {
+                        headers: { "X-CSRFToken": getCookie('csrftoken') },
+                    }
+                ).then((result) => {
+                    alldata.push(data.text)
+                    alldata.push(result.data[0].image)
+                    alldata.push(result.data[0].pseudo)
+                    alldata.push(data.id)
+                    tab[i] = alldata
+                    alldata = []
+                    if (num == 1) {
+                        setTimeout(() => {
+                            SetListTestimonie(tab)
+                        }, 100);
+                    } else if (num == 0) {
+                        setTimeout(() => {
+                            SetCountWaiting(tab.length)
+                            SetWaitingtestimonie(tab)
+                        }, 100);
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                    return false
+                })
+            }
+            )
+        }).catch((err) => {
+            console.log(err);
+            return false
+        })
+    }
     const searchUser = (e) => {
         if (e.target.value.length > 2 && e.target.value.length <= 5) {
             client.post('api/user/search/', { 'pseudo': e.target.value },
@@ -118,13 +201,16 @@ const Manage = (props) => {
     const addDate = (e) => {
         e.preventDefault();
         // Lines to get input Hours and add minute to it
-        const d = new Date(startDate + 'T' + startTime + ':00')
-        const addMinutes = new Date(d.setMinutes(d.getMinutes() + parseInt(duration))).toLocaleString()
+        // const d = new Date(startDate + 'T' + startTime + ':00')
+        // const addMinutes = new Date(d.setMinutes(d.getMinutes() + parseInt(duration))).toLocaleString()
 
         const formData = new FormData()
-        formData.append('start', startDate + 'T' + startTime + ':00')
-        formData.append('end', startDate + 'T' + addMinutes.split(' ')[1])
+        formData.append('startTime', startTime)
+        formData.append('endTime', endTime)
+        formData.append('duration', duration)
+        formData.append('day_schedule', startDate)
         formData.append('idSelectUser', idSelectUser)
+        // formData.append('end', startDate + 'T' + addMinutes.split(' ')[1])
 
         client.post('api/store/schedule/add/', formData,
             {
@@ -166,6 +252,34 @@ const Manage = (props) => {
                     document.getElementById('loading_2').style.display = 'none';
                 }, 1500);
             })
+            return true
+        }).catch((err) => {
+            console.log(err);
+            return false
+        })
+    }
+    const addContact = () => {
+        document.getElementById('loading').style.display = 'block';
+        const formData = new FormData()
+        formData.append('facebook', facebook)
+        formData.append('instagram', instagram)
+        formData.append('youtube', youtube)
+        formData.append('whatsapp', whatsapp)
+        formData.append('store_name', store_name)
+        formData.append('store_email', store_email)
+        formData.append('store_contact', store_contact)
+        formData.append('store_address', store_address)
+        formData.append('id_user', sessionStorage['id'])
+
+        client.post('api/store/update-contact/', formData,
+            {
+                headers: { "X-CSRFToken": getCookie('csrftoken') },
+            }
+        ).then((res) => {
+            document.getElementById('loading').innerHTML = '<div class="alert alert-success" role="alert">Done!</div>';
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+            }, 1500);
             return true
         }).catch((err) => {
             console.log(err);
@@ -303,6 +417,9 @@ const Manage = (props) => {
                 setStartTime(event.target.value)
                 return
             case 'end-time':
+                setEndTime(event.target.value)
+                return
+            case 'duration':
                 setDuration(event.target.value)
                 return
 
@@ -347,6 +464,32 @@ const Manage = (props) => {
             case 'view-device':
                 setDevice_view_hairstyle(event.target.value)
                 return
+
+            // section contacts
+            case 'facebook':
+                setFacebook(event.target.value)
+                return
+            case 'instagram':
+                setInstagram(event.target.value)
+                return
+            case 'youtube':
+                setYoutube(event.target.value)
+                return
+            case 'whatsapp':
+                setWhatsapp(event.target.value)
+                return
+            case 'store_name':
+                setStore_name(event.target.value)
+                return
+            case 'store_email':
+                setStore_email(event.target.value)
+                return
+            case 'store_contact':
+                setStore_contact(event.target.value)
+                return
+            case 'store_address':
+                setStore_address(event.target.value)
+                return
         }
     }
     const viewSchedule = (id_user_select) => {
@@ -356,22 +499,11 @@ const Manage = (props) => {
                 headers: { "X-CSRFToken": getCookie('csrftoken') },
             }
         ).then((res) => {
-            SetTimeList(res.data)
-            return true
-        }).catch((err) => {
-            console.log(err);
-            return false
-        })
-    }
-    const removeSchedule = (id_schedule) => {
-        client.get('api/store/schedule/delete/' + id_schedule + '/',
-            { withCredentials: true },
-            {
-                headers: { "X-CSRFToken": getCookie('csrftoken') },
-            }
-        ).then((res) => {
-            console.log(res.data);
-            viewSchedule(idSelectUser)
+            // SetTimeList(res.data)
+            dispatch({
+                type: 'USER-SCHEDULE-ADD',
+                event: res.data
+            });
             return true
         }).catch((err) => {
             console.log(err);
@@ -434,6 +566,41 @@ const Manage = (props) => {
             return false
         })
     }
+    const removeTestimonie = (id) => {
+        client.get('api/store/testimonie/delete/' + id + '/',
+            { withCredentials: true },
+            {
+                headers: { "X-CSRFToken": getCookie('csrftoken') },
+            }
+        ).then((res) => {
+            getTestimonies(1)
+            handleClose_approved_testimonie()
+            return true
+        }).catch((err) => {
+            console.log(err);
+            return false
+        })
+    }
+    const approveTestimonie = (id) => {
+        const formData = new FormData()
+        formData.append('id', id)
+        client.post('api/store/testimonie/update/', formData,
+            {
+                headers: { "X-CSRFToken": getCookie('csrftoken') },
+            }
+        ).then((res) => {
+            getTestimonies(1)
+            setTimeout(() => {
+                tab = []
+                getTestimonies(0)
+            }, 1000);
+            handleClose_waiting_testimonie()
+            return true
+        }).catch((err) => {
+            console.log(err);
+            return false
+        })
+    }
     const handleImageUpload = async (fileImage) => {
         console.log('originalFile instanceof Blob', fileImage instanceof Blob); // true
         console.log(`originalFile size ${fileImage.size / 1024 / 1024} MB`);
@@ -466,7 +633,7 @@ const Manage = (props) => {
                     <Breadcrumb.Item active>{props.title}</Breadcrumb.Item>
                 </Breadcrumb>
                 <br />
-                <Accordion defaultActiveKey={['0',]} alwaysOpen>
+                <Accordion defaultActiveKey={['0']} alwaysOpen>
                     <Accordion.Item eventKey="0">
                         <Accordion.Header>Our team</Accordion.Header>
                         <Accordion.Body>
@@ -498,7 +665,7 @@ const Manage = (props) => {
                                     }}>
                                     {listusers.map((listusers, i) =>
                                         <ListGroup.Item className='item' id={listusers.id} key={i} onClick={() => {
-                                            setImage('http://localhost:8000' + listusers.image)
+                                            setImage(url + listusers.image)
                                             setPseudo(listusers.pseudo)
                                             setIsBarber((listusers.is_barber).toString())
                                             setIdSelectUser(listusers.id)
@@ -510,16 +677,16 @@ const Manage = (props) => {
                                                 width: '330px'
                                             }}>
                                             <div id="barbershop-img">
-                                                <Image src={'http://localhost:8000/' + listusers.image} width="80px" height="79px" />
+                                                <Image src={url + listusers.image} width="80px" height="79px" />
                                             </div>
                                             <div className="details" style={{ lineHeight: '22px' }}>
                                                 <div id='title'><b>{listusers.pseudo}</b></div>
                                                 <div id='adr'><b>Since : </b><span>{listusers.date_created}</span></div>
                                                 <div id='statut'>
                                                     <div><b>Barber : </b><i>{(listusers.is_barber).toString()}</i></div>
-                                                    <div id='stars'>
+                                                    {/* <div id='stars'>
                                                         <BsHandThumbsUpFill />&nbsp;{'store'}
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </div>
                                         </ListGroup.Item>
@@ -599,6 +766,146 @@ const Manage = (props) => {
                             </div>
                         </Accordion.Body>
                     </Accordion.Item>
+                    <Accordion.Item eventKey="3">
+                        <Accordion.Header>
+                            <React.Fragment>
+                                Our Testimonies
+                                &nbsp;<Badge bg="danger" class="position-absolute top-0 start-100 translate-middle rounded-pill">{countWaiting}</Badge>
+                            </React.Fragment>
+                        </Accordion.Header>
+                        <Accordion.Body>
+                            <Row xs={1} md={2} lg={2}>
+                                <Col className='mb-3'>
+                                    <Card>
+                                        <Card.Header>Approved</Card.Header>
+                                        <Card.Body className='p-0'>
+                                            <Card.Text>
+                                                <div style={{
+                                                    display: 'flex',
+                                                    flexWrap: 'wrap',
+                                                    justifyContent: 'flex-start',
+                                                    maxHeight: '350px',
+                                                    overflowY: 'scroll'
+                                                }}>
+                                                    {listtestimonie.map((listtestimonie, i) =>
+                                                        <div className='our-teams' key={i} style={{ width: '100px', margin: '5px 0 10px 10px' }}>
+                                                            <div className='item'><Image onClick={(event) => {
+                                                                SetShow_approved_testimonie(true)
+                                                                setImage(listtestimonie[1])
+                                                                setPseudo(listtestimonie[2])
+                                                                setIdSelectUser(listtestimonie[3])
+                                                                setDescription(listtestimonie[0])
+                                                            }} id={listtestimonie[3]} src={listtestimonie[1]} width="100px" height="100px" />
+                                                                <span id='team-name'>{listtestimonie[2]}</span>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                                <Col className='mb-3'>
+                                    <Card bg='secondary' text='white'>
+                                        <Card.Header>Wait for Approved &nbsp;<Badge bg="danger" class="position-absolute top-0 start-100 translate-middle rounded-pill">{countWaiting}</Badge> </Card.Header>
+                                        <Card.Body className='p-0'>
+                                            <Card.Text>
+                                                <div style={{
+                                                    display: 'flex',
+                                                    flexWrap: 'wrap',
+                                                    justifyContent: 'flex-start',
+                                                    maxHeight: '350px',
+                                                    overflowY: 'scroll'
+                                                }}>
+                                                    {waitingtestimonie.map((waitingtestimonie, i) =>
+                                                        <div className='our-teams' key={i} style={{ width: '100px', margin: '5px 0 10px 10px' }}>
+                                                            <div className='item'><Image onClick={(event) => {
+                                                                SetShow_waiting_testimonie(true)
+                                                                setImage(waitingtestimonie[1])
+                                                                setPseudo(waitingtestimonie[2])
+                                                                setIdSelectUser(waitingtestimonie[3])
+                                                                setDescription(waitingtestimonie[0])
+                                                            }} id={waitingtestimonie[3]} src={waitingtestimonie[1]} width="100px" height="100px" />
+                                                                <span id='team-name'>{waitingtestimonie[2]}</span>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            </Row>
+
+                        </Accordion.Body>
+                    </Accordion.Item>
+                    <Accordion.Item eventKey="4">
+                        <Accordion.Header>
+                            Contacts & Social Medias
+                        </Accordion.Header>
+                        <Accordion.Body>
+                            <Row xs={1} md={2} lg={2}>
+                                <Col className='mb-3'>
+                                    <Card>
+                                        <Card.Header>Social media</Card.Header>
+                                        <Card.Body className='p-2'>
+                                            <Card.Text>
+                                                <Form>
+                                                    <Form.Group className="mb-3" controlId="formBasicName">
+                                                        <Form.Label>Facebook :</Form.Label>
+                                                        <Form.Control type="text" name="facebook" value={facebook} placeholder="facebook url" onChange={(e) => handleForm(e)} />
+                                                    </Form.Group>
+                                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                        <Form.Label>Instagram :</Form.Label>
+                                                        <Form.Control type="email" name="instagram" value={instagram} placeholder="instagram url" onChange={(e) => handleForm(e)} />
+                                                    </Form.Group>
+                                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                        <Form.Label>Youtube :</Form.Label>
+                                                        <Form.Control type="text" name="youtube" value={youtube} placeholder="youtube url" onChange={(e) => handleForm(e)} />
+                                                    </Form.Group>
+                                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                        <Form.Label>Whatsapp :</Form.Label>
+                                                        <Form.Control type="text" name="whatsapp" value={whatsapp} placeholder="whatsapp url" onChange={(e) => handleForm(e)} />
+                                                    </Form.Group>
+                                                </Form>
+                                            </Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                                <Col className='mb-3'>
+                                    <Card>
+                                        <Card.Header>Contact</Card.Header>
+                                        <Card.Body className='p-2'>
+                                            <Card.Text>
+                                                <Form>
+                                                    <Form.Group className="mb-3" controlId="formBasicName">
+                                                        <Form.Label>Store name :</Form.Label>
+                                                        <Form.Control type="text" name="store_name" value={store_name} placeholder="Enter your name" onChange={(e) => handleForm(e)} />
+                                                    </Form.Group>
+                                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                        <Form.Label>Store email :</Form.Label>
+                                                        <Form.Control type="email" name="store_email" value={store_email} placeholder="Enter email" onChange={(e) => handleForm(e)} />
+                                                    </Form.Group>
+                                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                        <Form.Label>Store contact :</Form.Label>
+                                                        <Form.Control type="text" name="store_contact" value={store_contact} placeholder="Enter contact" onChange={(e) => handleForm(e)} />
+                                                    </Form.Group>
+                                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                        <Form.Label>Store address :</Form.Label>
+                                                        <Form.Control type="text" name="store_address" value={store_address} placeholder="Enter address" onChange={(e) => handleForm(e)} />
+                                                    </Form.Group>
+                                                </Form>
+                                            </Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            </Row>
+                            <div id="loading" style={{ display: 'none', textAlign: 'center' }}>
+                                <Spinner animation="border" />
+                            </div>
+                            <Button onClick={() => addContact()}>Apply</Button>
+                        </Accordion.Body>
+                    </Accordion.Item>
                 </Accordion>
                 {/* Modal to add or delete schedule for a member team */}
                 <Modal
@@ -618,14 +925,16 @@ const Manage = (props) => {
                                 <div>
                                     <b>Pseudo : </b>{pseudo}
                                 </div>
-                                <Button variant="danger" onClick={() => removeTeamMember(idSelectUser)}>Remove from team</Button>
+                                <Button variant="danger" onClick={() => removeTeamMember(idSelectUser)}>Remove</Button>
                             </div>
                         </div>
+                        <br />
+                        <CalendarAddSchedule id_select_user={idSelectUser}></CalendarAddSchedule>
                         <div id="loading_1" style={{ margin: '5px 0 5px', display: 'none', textAlign: 'center' }}>
                             <Spinner animation="border" />
                         </div>
                         <Form onSubmit={e => addDate(e)}>
-                            <div className='my-3'>
+                            {/* <div className='my-3'>
                                 <ul style={{
                                     listStyle: 'none',
                                     padding: '5px'
@@ -633,13 +942,16 @@ const Manage = (props) => {
                                     {
                                         timeList.map((timelist, i) =>
                                             <li className="list-time" key={i}>
-                                                <span><b>{timelist.start.split('T')[0]} || {timelist.start.split('T')[1].slice(0, 5)}/{timelist.end.split('T')[1].slice(0, 5)}</b></span>
-                                                <Button variant="danger" onClick={() => removeSchedule(timelist.id)}>Remove</Button>
+                                                <span>{timelist.start.split('T')[0]} || {timelist.start.split('T')[1].slice(0, 5)}/{timelist.end.split('T')[1].slice(0, 5)}</span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16" variant="danger" onClick={() => removeSchedule(timelist.id)}>
+                                                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                                </svg>
                                             </li>
                                         )
                                     }
                                 </ul>
-                            </div>
+                            </div> */}
                             <Row className='g-3 my-3'>
                                 <Col xs={12}>
                                     <Form.Label for='date'>Select day :</Form.Label>
@@ -652,32 +964,42 @@ const Manage = (props) => {
                                         Valid first name is required.
                                     </div>
                                 </Col>
-                                <Col xs={6}>
-                                    <Form.Label for='start-time'>Start time</Form.Label>
+                                <Col xs={4}>
+                                    <Form.Label for='start-time'>Start time :</Form.Label>
                                     <Form.Control
                                         type='time'
                                         id='start-time'
                                         name='start-time'
                                         onChange={(e) => handleForm(e)} />
                                     <div class="invalid-feedback">
-                                        Valid first name is required.
+                                        Valid time is required.
                                     </div>
                                 </Col>
-                                <Col xs={6}>
-                                    <Form.Label for='end-time'>Duration (Minutes)</Form.Label>
+                                <Col xs={4}>
+                                    <Form.Label for='end-time'>End time :</Form.Label>
                                     <Form.Control
-                                        value={duration}
-                                        type='number'
+                                        type='time'
                                         id='end-time'
                                         name='end-time'
                                         onChange={(e) => handleForm(e)} />
                                     <div class="invalid-feedback">
-                                        Valid last name is required.
+                                        Valid time is required.
+                                    </div>
+                                </Col>
+                                <Col xs={4}>
+                                    <Form.Label for='duration'>Time (Min) :</Form.Label>
+                                    <Form.Control
+                                        value={duration}
+                                        type='number'
+                                        id='duration'
+                                        name='duration'
+                                        onChange={(e) => handleForm(e)} />
+                                    <div class="invalid-feedback">
+                                        Valid duration is required.
                                     </div>
                                 </Col>
                             </Row>
                             <Button type='submit' style={{ marginBottom: 5, width: '100%' }}>Add date</Button>
-                            {/* <div style={{ marginBottom: 15 + 'px' }}></div> */}
                         </Form>
                     </Modal.Body>
                 </Modal>
@@ -942,6 +1264,132 @@ const Manage = (props) => {
                             <Spinner animation="border" />
                         </div>
                     </Modal.Body>
+                </Modal>
+                {/* Modal to view testimonie */}
+                <Modal
+                    show={show_approved_testimonie}
+                    onHide={handleClose_approved_testimonie}
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                    scrollable="true"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>View Testimonie</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Swiper
+                            style={{
+                                '--swiper-pagination-color': 'black',
+                            }}
+                            pagination={{
+                                clickable: true,
+                            }}
+                            loop={true}
+                            effect={'coverflow'}
+                            slidesPerView={'auto'}
+                            spaceBetween={30}
+                            centeredSlides={true}
+                            grabCursor={true}
+                            coverflowEffect={{
+                                rotate: 10,
+                                stretch: 0,
+                                depth: 100,
+                                modifier: 1,
+                                slideShadows: true,
+                            }}
+                            // install Swiper modules
+                            modules={[EffectCoverflow, Pagination]}
+                        // className='mySwiper-3'
+                        >
+                            <SwiperSlide>
+                                <div className="content-testimonial">
+                                    <div id="quote">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="80px" height="80px" fill="currentColor" class="bi bi-quote" viewBox="0 0 16 16">
+                                            <path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 9 7.558V11a1 1 0 0 0 1 1h2Zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 3 7.558V11a1 1 0 0 0 1 1h2Z" />
+                                        </svg>
+                                    </div>
+                                    <div id="text-testimonial">
+                                        {description}
+                                    </div>
+                                    <div className="detail">
+                                        <div id="img-testimonial">
+                                            <img src={image} />
+                                        </div>
+                                        <div id="user-details">
+                                            <h5>{pseudo}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </SwiperSlide>
+                        </Swiper>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={() => removeTestimonie(idSelectUser)} variant="danger">Remove</Button>
+                        <Button onClick={handleClose_approved_testimonie}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+                {/* Modal to approve testimonie */}
+                <Modal
+                    show={show_waiting_testimonie}
+                    onHide={handleClose_waiting_testimonie}
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                    scrollable="true"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Waiting for approbation</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Swiper
+                            style={{
+                                '--swiper-pagination-color': 'black',
+                            }}
+                            pagination={{
+                                clickable: true,
+                            }}
+                            loop={true}
+                            effect={'coverflow'}
+                            slidesPerView={'auto'}
+                            spaceBetween={30}
+                            centeredSlides={true}
+                            grabCursor={true}
+                            coverflowEffect={{
+                                rotate: 10,
+                                stretch: 0,
+                                depth: 100,
+                                modifier: 1,
+                                slideShadows: true,
+                            }}
+                            // install Swiper modules
+                            modules={[EffectCoverflow, Pagination]}
+                        // className='mySwiper-3'
+                        >
+                            <SwiperSlide>
+                                <div className="content-testimonial">
+                                    <div id="quote">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="80px" height="80px" fill="currentColor" class="bi bi-quote" viewBox="0 0 16 16">
+                                            <path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 9 7.558V11a1 1 0 0 0 1 1h2Zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 3 7.558V11a1 1 0 0 0 1 1h2Z" />
+                                        </svg>
+                                    </div>
+                                    <div id="text-testimonial">
+                                        {description}
+                                    </div>
+                                    <div className="detail">
+                                        <div id="img-testimonial">
+                                            <img src={image} />
+                                        </div>
+                                        <div id="user-details">
+                                            <h5>{pseudo}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </SwiperSlide>
+                        </Swiper>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={() => removeTestimonie(idSelectUser)} variant="danger">Remove</Button>
+                        <Button onClick={() => approveTestimonie(idSelectUser)}>Approve</Button>
+                    </Modal.Footer>
                 </Modal>
             </div>
             <Iconbutton></Iconbutton>

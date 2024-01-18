@@ -54,6 +54,12 @@ urlpatterns = [
     path('store/galerie/', views.GalerieView.as_view(), name='galerie'),
     path('store/galerie/add/', views.GalerieCreateView.as_view(), name='add-hairstyle'),
     path('store/galerie/remove/<int:id>/', views.RemoveGalerieView.as_view(), name='remove-galerie'),
+    path('store/testimonie/add/', views.TestimonieCreateView.as_view(), name='add-testimonie'),
+    path('store/testimonie/<int:num>/', views.TestimonieView.as_view(), name='testimonie'),
+    path('store/testimonie/delete/<int:id>/', views.RemoveTestimonieView.as_view(), name='delete-testimonie'),
+    path('store/testimonie/update/', views.UpdateTestimonieView.as_view(), name='update-testimonie'),
+    path('store/contact/', views.StoreContactView.as_view(), name='store-contact'),
+    path('store/update-contact/', views.StoreUpdateContactView.as_view(), name='update-contact'),
 ]
 
 # urlpatterns += router.urls

@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Button, Col, Form, Image, Modal, Row } from 'react-bootstrap';
 import Teams from './Teams';
-import axios from 'axios';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { getCookie } from '../data/functions';
+import { client, getCookie } from '../data/functions';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -13,10 +12,6 @@ import 'swiper/css/pagination';
 // import required modules
 import { Pagination } from 'swiper/modules';
 import Calender from './Calender';
-
-const client = axios.create({
-    baseURL: "http://localhost:8000/"
-})
 
 function Freshcut() {
     const [show, setShow] = useState(false);
@@ -82,10 +77,10 @@ function Freshcut() {
                 <Modal.Body>
                     <Form>
                         <Row xs={1} md={2} lg={2}>
-                            <Col className='mb-2'>
+                            <Col xs={6} md={4} lg={4} className='mb-2'>
                                 <Image id={id} src={imgfreshcut} width="150px" height="150px" rounded />
                             </Col>
-                            <Col>
+                            <Col xs={6} md={8} lg={8}>
                                 <h4>{name}</h4>
                                 <b>Description :</b>
                                 <p>

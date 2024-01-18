@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Mynavbar from '../components/Navbarcomp';
 import Mycarousel from '../components/Carouselcomp';
 import Freshcut from '../components/Freshcut';
@@ -10,8 +10,21 @@ import Testimonie from '../components/Testimonie';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import Iconbutton from '../components/Iconbutton';
+import { useParams } from 'react-router-dom';
+import Teams from '../components/Teams';
 
 const Home = () => {
+    const { id } = useParams();
+    useEffect(() => {
+        // Utilisez l'ID comme nécessaire
+        const sectionSpecifique = document.getElementById(id);
+        if (sectionSpecifique) {
+            window.scrollTo({
+                top: sectionSpecifique.offsetTop,
+                behavior: 'smooth',
+            });
+        }
+    }, []);
     return (
         <div id='scrollup'>
             <Mynavbar></Mynavbar>
@@ -48,7 +61,6 @@ const Home = () => {
             <div className="section-testimonies" id="section-testimonies">
                 <div className="container">
                     <h1>What they said about us</h1>
-                    <br />
                     <Testimonie></Testimonie>
                 </div>
             </div>

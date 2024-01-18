@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Form, Row, Col, Image, Button } from 'react-bootstrap';
 import { BsHandThumbsUpFill, BsShopWindow } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
-import Formconnect from '../components/Formconnect';
 import Iconbutton from '../components/Iconbutton';
-import LoadingButton from '../components/Iconbutton';
-import { getCookie } from '../data/functions';
-
-axios.defaults.withCredentials = true;
-const client = axios.create({
-    baseURL: "http://localhost:8000/"
-})
+import { client, getCookie } from '../data/functions';
 
 const CoverPage = () => {
     const navigate = useNavigate();

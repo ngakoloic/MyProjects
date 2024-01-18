@@ -4,7 +4,9 @@ from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse, JsonResponse
 from .models import *
 from django.contrib.auth.models import User
+from datetime import datetime, timedelta
 import os
+import time
 
 # UserModel = django.contrib.auth.get_user_model()
 
@@ -26,6 +28,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField()
     username = serializers.CharField()
+    # is_superuser = serializers.CharField()
     ##
     def check_user(self, data):
         user = authenticate(username=data['username'],
@@ -37,7 +40,7 @@ class UserLoginSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username','email')
+        fields = ('username','email','is_superuser')
 
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,7 +50,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 class UserUpdateUserNameSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username',)
+        fields = ('username')
     def update(self, data):
         user_obj = User.objects.get(username=data['user'])
         user_obj.username = data['username']
@@ -127,6 +130,64 @@ class StoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Store
         fields = '__all__'
+    def create(self, data):
+        getContact = Store.objects.all()
+        try:
+            facebook = data['facebook']
+        except:
+            facebook = ''
+        try:
+            instagram = data['instagram']
+        except:
+            instagram = ''
+        try:
+            youtube = data['youtube']
+        except:
+            youtube = ''
+        try:
+            whatsapp = data['whatsapp']
+        except:
+            whatsapp = ''
+        try:
+            store_name = data['store_name']
+        except:
+            store_name = ''
+        try:
+            store_email = data['store_email']
+        except:
+            store_email = ''
+        try:
+            store_contact = data['store_contact']
+        except:
+            store_contact = ''
+        try:
+            store_address = data['store_address']
+        except:
+            store_address = ''
+        if getContact :
+            contact_obj = Store.objects.get(id=1)
+            contact_obj.facebook = facebook
+            contact_obj.instagram = instagram
+            contact_obj.youtube = youtube
+            contact_obj.whatsapp = whatsapp
+            contact_obj.name = store_name
+            contact_obj.tel = store_contact
+            contact_obj.email = store_email
+            contact_obj.address = store_address
+            contact_obj.save()
+            return contact_obj
+        contact_obj = Store.objects.create(facebook=facebook,
+                                        instagram=instagram)
+        contact_obj.youtube = youtube
+        contact_obj.whatsapp = whatsapp
+        contact_obj.name = store_name
+        contact_obj.tel = store_contact
+        contact_obj.email = store_email
+        contact_obj.address = store_address
+        contact_obj.user_id = data['id_user']
+        contact_obj.save()
+        return contact_obj
+    
 
 class SearchUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -138,11 +199,31 @@ class ScheduleCreateSerializer(serializers.ModelSerializer):
         model = Schedule
         fields = '__all__'
     def create(self, data):
-        schedule_obj = Schedule.objects.create(start=data['start'],
-                                        end=data['end'])
-        schedule_obj.user_id = data['idSelectUser']
-        schedule_obj.title = schedule_obj.id
-        schedule_obj.save()
+        startTime = data['startTime']
+        endTime = data['endTime']
+        duration = data['duration']
+        ConcatStartTime = data['day_schedule'] +'T'+ data['startTime'] +':00'
+        ConcatEndTime = data['day_schedule'] +'T'+ data['endTime'] +':00'
+
+        newEndTime = startTime
+
+        startTime_format = datetime.strptime(startTime, "%H:%M")
+        initStartTime_format = startTime_format
+        endTime_format = datetime.strptime(endTime, "%H:%M")
+
+        while ( endTime_format != startTime_format ):
+            # Ajout des minutes spécifiées
+            startTime_format = startTime_format + timedelta(minutes=int(duration))
+            ConcatEndTime = data['day_schedule'] +'T'+ str(startTime_format).split(' ')[1]
+
+            schedule_obj = Schedule.objects.create(start=ConcatStartTime,
+                                            end=ConcatEndTime)
+            schedule_obj.user_id = data['idSelectUser']
+            schedule_obj.date_created = data['day_schedule']
+            schedule_obj.title = schedule_obj.id
+            schedule_obj.save()
+            ConcatStartTime = ConcatEndTime
+            time.sleep(0.1)
         return schedule_obj
 
 class ScheduleSerializer(serializers.ModelSerializer):
@@ -240,3 +321,17 @@ class GalerieCreateSerializer(serializers.ModelSerializer):
         galerie_obj = Galerie.objects.create(image=data['image'])
         galerie_obj.save()
         return galerie_obj
+
+class TestimonieCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Testimonie
+        fields = '__all__'
+    def create(self, data):
+        testimonie_obj = Testimonie.objects.create(user_id=data['id_user'], text=data['testimonie'])
+        testimonie_obj.save()
+        return testimonie_obj
+    def update(self, data):
+        testimonie_obj = Testimonie.objects.get(id=data['id'])
+        testimonie_obj.status = 1
+        testimonie_obj.save()
+        return testimonie_obj

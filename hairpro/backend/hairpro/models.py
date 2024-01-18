@@ -19,19 +19,16 @@ class DetailUser(models.Model):
 
 # Store model
 class Store(models.Model):
-    OPEN = 'open'
-    CLOSE = 'close'
-    STATUS = [
-        (OPEN, 'Open'),
-        (CLOSE, 'Close')
-    ]
-    name = models.CharField(null=False, max_length=50)
+    user = models.OneToOneField(DetailUser, on_delete=models.CASCADE, default='1')
+    name = models.CharField(null=False, max_length=50, default='My Store')
     tel = models.CharField(null=True, max_length=50)
-    adress = models.CharField(null=True, max_length=80)
-    image = models.ImageField(upload_to='store/', default=False, null=True)
-    status = models.CharField(max_length=5, choices=STATUS, default=OPEN)
-    like = models.IntegerField(default=0)
+    address = models.CharField(null=True, max_length=80)
+    email = models.CharField(null=True, max_length=80)
     date_created = models.DateField(default=now)
+    facebook = models.CharField(null=True, max_length=250)
+    instagram = models.CharField(null=True, max_length=250)
+    youtube = models.CharField(null=True, max_length=250)
+    whatsapp = models.CharField(null=True, max_length=250)
     def __str__(self):
         return self.name
 
@@ -62,9 +59,9 @@ class Hairstyle(models.Model):
 # Appointment model           
 class Appointment(models.Model):
     choice = models.CharField(null=False, max_length=50, default='no')
-    user = models.ForeignKey(DetailUser, on_delete=models.CASCADE, default='4')
-    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, default='')
-    hairstyle = models.ForeignKey(Hairstyle, on_delete=models.CASCADE, default='15')
+    user = models.ForeignKey(DetailUser, on_delete=models.CASCADE, default='1')
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, default='1')
+    hairstyle = models.ForeignKey(Hairstyle, on_delete=models.CASCADE, default='1')
     date_created = models.DateField(default=now)
     status = models.IntegerField(default=0)
     def __str__(self):
@@ -80,7 +77,9 @@ class Galerie(models.Model):
 
 # Testimonie model
 class Testimonie(models.Model):
+    text = models.CharField(null=False, max_length=250, default='')
     date_created = models.DateField(default=now)
-    user = models.ForeignKey(DetailUser, on_delete=models.CASCADE, default='1')
+    user = models.ForeignKey(DetailUser, on_delete=models.CASCADE, default='')
+    status = models.IntegerField(default=0)
     def __str__(self):
         return 'Testimonie : '+self.user.pseudo

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { getCookie } from '../data/functions';
+import { client, getCookie } from '../data/functions';
 
 // import Swiper core and required modules
 import { EffectCoverflow, Pagination } from 'swiper/modules';
@@ -10,11 +9,6 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-
-axios.defaults.withCredentials = true;
-const client = axios.create({
-    baseURL: "http://localhost:8000/"
-})
 
 const Galeries = () => {
     const [galeries, SetGaleries] = useState([]);
@@ -56,7 +50,7 @@ const Galeries = () => {
         // className='mySwiper-2'
         >
             {galeries.map((galerie, i) =>
-                <SwiperSlide>
+                <SwiperSlide key={i}>
                     <img src={galerie.image} width={'300px'} height={'350px'} />
                 </SwiperSlide>
             )}

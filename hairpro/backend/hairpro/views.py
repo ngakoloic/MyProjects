@@ -13,6 +13,7 @@ from rest_framework import generics
 import json
 from django.contrib.auth.models import User
 from django.utils.timezone import now
+from datetime import datetime
 import os
 
 
@@ -41,8 +42,15 @@ class UserLogin(APIView):
             login(request, user)
             items = DetailUser.objects.filter(user__username=data['username'])
             serializer_2 = UserDetailSerializer(items, many=True)
+            items_2 = User.objects.filter(username=data['username'])
+            serializer_3 = UserSerializer(items_2, many=True)
+            hash_superuser = serializer_3.data[0]['is_superuser']
+            hash_superuser = 'cjiwfier4h5i9ehew943hh4i5rgfbq9439rhbneifr39mnzx' if (hash_superuser == True) else 'efcurehfcbeuwcuecvjewqwuedwavxcqwpeoiduewganxsqxvazx'
+            
             tab.append(serializer_1.data['username'])
             tab.append(serializer_2.data[0]['id'])
+            tab.append(hash_superuser)
+
             return Response(tab, status=status.HTTP_200_OK)
 
 class UserLogout(APIView):
@@ -59,8 +67,7 @@ class UserView(APIView):
         return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 
 class UserDetail(generics.ListAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.AllowAny,)
     ##
     serializer_class = UserDetailSerializer
     def get_queryset(self):
@@ -167,7 +174,7 @@ class ScheduleUserView(generics.ListAPIView):
     serializer_class = ScheduleSerializer
     def get_queryset(self):
         id_user = self.kwargs['id_user']
-        schedule = Schedule.objects.filter(user_id=id_user)
+        schedule = Schedule.objects.filter(user_id=id_user).order_by('-id')
         return schedule
 
 class DeleteUserScheduleView(generics.ListAPIView):
@@ -196,7 +203,9 @@ class StoreScheduleView(generics.ListAPIView):
     ##
     serializer_class = ScheduleSerializer
     def get_queryset(self):
-        schedule = Schedule.objects.filter(status=1)
+        now = datetime.now()
+        formatted_now = now.strftime("%Y-%m-%d")
+        schedule = Schedule.objects.filter(status=1, date_created__gte=formatted_now)
         return schedule
 
 class AppointmentCreateView(APIView):
@@ -357,3 +366,73 @@ class RemoveGalerieView(generics.ListAPIView):
             os.remove(image_path)
             galerie_obj.delete()
         return galerie_obj, 200
+
+class TestimonieCreateView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def post(self, request):
+        data = request.data
+        serializer = TestimonieCreateSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            testimonie_obj = serializer.create(data)
+            if testimonie_obj:
+                return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class TestimonieView(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    ##
+    serializer_class = TestimonieCreateSerializer
+    def get_queryset(self):
+        num = self.kwargs['num']
+        if (num == 1):
+            testimonie_obj = Testimonie.objects.filter(status=1).order_by('-id')
+        elif (num == 0):
+            testimonie_obj = Testimonie.objects.filter(status=0).order_by('-id')
+        return testimonie_obj
+
+class RemoveTestimonieView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    serializer_class = TestimonieCreateSerializer
+    def get_queryset(self):
+        id_testimonie = self.kwargs['id']
+        testimonie_obj = Testimonie.objects.filter(id=id_testimonie)
+        testimonie_obj.delete()
+        return testimonie_obj
+
+class UpdateTestimonieView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def post(self, request):
+        data = request.data
+        serializer = TestimonieCreateSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            testimonie_obj = serializer.update(data)
+            if testimonie_obj:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class StoreContactView(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    ##
+    serializer_class = StoreSerializer
+    def get_queryset(self):
+        contact_obj = Store.objects.all()
+        return contact_obj
+
+class StoreUpdateContactView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    ##
+    def post(self, request):
+        data = request.data
+        serializer = StoreSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            contact_obj = serializer.create(data)
+            if contact_obj:
+                return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)

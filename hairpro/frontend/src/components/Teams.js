@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Image } from 'react-bootstrap';
 import teamschedule from '../actions';
 import { AppContext } from '../reducers/AppContext';
-import axios from 'axios';
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -13,11 +12,7 @@ import 'swiper/css/pagination';
 
 // import required modules
 import { Pagination } from 'swiper/modules';
-import { getCookie } from '../data/functions';
-
-const client = axios.create({
-    baseURL: "http://localhost:8000/"
-})
+import { client, getCookie } from '../data/functions';
 
 const Teams = () => {
     const [users, SetUsers] = useState([]);
@@ -37,7 +32,7 @@ const Teams = () => {
 
     const { dispatch } = useContext(AppContext);
     return (
-        <div className='our-teams'>
+        <div className='our-teams mb-3'>
             <h4>Our teams</h4>
             <p>Select one to check availability</p>
             <Swiper
@@ -48,7 +43,7 @@ const Teams = () => {
                     clickable: true,
                 }}
                 modules={[Pagination]}
-            // className="mySwiper-1"
+                className="mySwiper"
             >
                 {users.map((user, i) =>
                     <SwiperSlide key={i}>

@@ -1,14 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Alert, Button, Form, Modal, Spinner } from 'react-bootstrap';
-import { register, handleForm, data, getCookie } from '../data/functions';
+import { register, handleForm, data, getCookie, client } from '../data/functions';
 import { AppContext } from '../reducers/AppContext';
 import FormRegister from './FormRegister';
-import axios from 'axios';
-
-axios.defaults.withCredentials = true;
-const client = axios.create({
-    baseURL: "http://localhost:8000/"
-})
 
 const Formconnect = (props) => {
 
@@ -29,6 +23,7 @@ const Formconnect = (props) => {
             });
             sessionStorage.setItem("id", res.data[1]);
             sessionStorage.setItem("user", res.data[0]);
+            sessionStorage.setItem('super', res.data[2])
             // console.log(sessionStorage.getItem('id'));
             SetUsername(res.data[0]);
             // client.get('api/user-detail/').then((response) => {
@@ -64,7 +59,7 @@ const Formconnect = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Group className="mb-3" controlId="formBasicUsername">
                             <Form.Label>Name</Form.Label>
                             <Form.Control type="text" name="username" placeholder="Enter your name" onChange={(e) => handleForm(e)} />
                         </Form.Group>

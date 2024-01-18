@@ -1,8 +1,4 @@
 import axios from 'axios';
-import imageCompression from 'browser-image-compression';
-// import { useState } from 'react';
-
-// export const [stateComp, SetStateComp] = useState();
 
 // get cookies id for the navigator
 export const getCookie = (name) => {
@@ -21,12 +17,12 @@ export const getCookie = (name) => {
     return cookieValue;
 }
 
-// axios.defaults.xsrfCookieName = 'csrftoken';
-// axios.defaults.xsrfHeaderName = 'X-CRSFToken';
+export const url = "http://localhost:8000/"
+
 axios.defaults.withCredentials = true;
 
 export const client = axios.create({
-    baseURL: "http://localhost:8000/"
+    baseURL: url
 })
 
 export let data = {
@@ -41,7 +37,6 @@ export let data = {
 };
 // Liste des images for header
 export const backgroundImage = {
-    img_1: require('../img/IMG_HAIRSTYLE_01.jpg'),
     img_2: require('../img/IMG_HAIRSTYLE_02.jpg'),
     img_3: require('../img/IMG_HAIRSTYLE_03.jpg')
 }
