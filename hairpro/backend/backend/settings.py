@@ -131,18 +131,19 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # },
     'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'd9see5r5r1q5v7',
-            'USER': 'bpsjvyimodjmcp',
-            'PASSWORD': 'bda2383b1263a1bee02d6b0cf1e7510a6e384e8f586652693790a973ad4cab2f',
-            'HOST': 'ec2-54-159-193-105.compute-1.amazonaws.com',
-            'PORT': '5432',
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+    # ,
+    # 'default': {
+    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #         'NAME': 'd9see5r5r1q5v7',
+    #         'USER': 'bpsjvyimodjmcp',
+    #         'PASSWORD': 'bda2383b1263a1bee02d6b0cf1e7510a6e384e8f586652693790a973ad4cab2f',
+    #         'HOST': 'ec2-54-159-193-105.compute-1.amazonaws.com',
+    #         'PORT': '5432',
+    #     }
 }
 
 ## User model
