@@ -5,6 +5,12 @@ import { initialEvents } from '../data/functions'; //Evenements initialles qui s
 
 const randomutility = (state = [], action) => {
     // const [iduser, SetIduser] = useState();
+    let id
+    try {
+        id = sessionStorage['id']
+    } catch (error) {
+        id = ''
+    }
     switch (action.type) {
         case 'SELECT-BARBER':
             state = { 'event': [action.event][0], 'id': sessionStorage['id'] }; //Encapsuler dans une [] pour pouvoir l'utiliser dans le calendrier

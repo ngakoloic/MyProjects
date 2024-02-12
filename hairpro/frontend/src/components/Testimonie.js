@@ -12,10 +12,9 @@ import { client, getCookie } from '../data/functions';
 import { AppContext } from '../reducers/AppContext';
 import Formconnect from './Formconnect';
 
-
 const Testimonie = () => {
-    const { randomutility } = useContext(AppContext);
-    const [listtestimonie, SetListTestimonie] = useState([]);
+    const { randomutility, dispatch } = useContext(AppContext);
+    const [listtestimonie, setListTestimonie] = useState([]);
     const [show, setShow] = useState(false);
     const [testimonie, setTestimonie] = useState();
     const [modalFormShow, SetModalFormShow] = useState(false);
@@ -50,11 +49,10 @@ const Testimonie = () => {
                     alldata.push(data.id)
                     tab[i] = alldata
                     alldata = []
-                    setTimeout(() => {
-                        SetListTestimonie(tab)
-                    }, 100);
+                    setListTestimonie(tab)
+                    dispatch({});
                 }).catch((err) => {
-                    console.log(err);
+                    console.log(err)
                     return false
                 })
             }
@@ -63,6 +61,8 @@ const Testimonie = () => {
             console.log(err);
             return false
         })
+
+        return tab
     }
 
     const addTestimonie = (e) => {

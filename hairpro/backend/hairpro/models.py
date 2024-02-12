@@ -19,7 +19,7 @@ class DetailUser(models.Model):
 
 # Store model
 class Store(models.Model):
-    user = models.OneToOneField(DetailUser, on_delete=models.CASCADE, default='1')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default='1')
     name = models.CharField(null=False, max_length=50, default='My Store')
     tel = models.CharField(null=True, max_length=50)
     address = models.CharField(null=True, max_length=80)

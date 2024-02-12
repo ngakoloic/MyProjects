@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Mynavbar from '../components/Navbarcomp';
 import Headerpage from '../components/Headerpage';
 import { Accordion, Badge, Breadcrumb, Button, Card, Col, Form, Image, InputGroup, ListGroup, Modal, Row, Spinner } from 'react-bootstrap';
@@ -16,8 +16,10 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import CalendarAddSchedule from '../components/CalendarAddSchedule';
+import { AppContext } from '../reducers/AppContext';
 
 const Manage = (props) => {
+    const { dispatch } = useContext(AppContext);
     const [users, SetUsers] = useState([]);
     const [hairstyles, SetHairstyles] = useState([]);
     const [galeries, SetGaleries] = useState([]);
@@ -297,6 +299,7 @@ const Manage = (props) => {
         formData.append('id_user', sessionStorage.getItem('id'))
 
         client.post('api/store/hairstyle/add/', formData,
+            { withCredentials: true },
             {
                 headers: { "X-CSRFToken": getCookie('csrftoken') },
             }
@@ -326,6 +329,7 @@ const Manage = (props) => {
         formData.append('id_user', sessionStorage.getItem('id'))
 
         client.post('api/store/galerie/add/', formData,
+            { withCredentials: true },
             {
                 headers: { "X-CSRFToken": getCookie('csrftoken') },
             }

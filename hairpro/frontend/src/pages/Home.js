@@ -12,6 +12,7 @@ import Footer from '../components/Footer';
 import Iconbutton from '../components/Iconbutton';
 import { useParams } from 'react-router-dom';
 import Teams from '../components/Teams';
+import CookiesConsent from '../components/CookiesConsent';
 
 const Home = () => {
     const { id } = useParams();
@@ -72,6 +73,7 @@ const Home = () => {
             {/* <div class="b-divider"></div> */}
             <Iconbutton></Iconbutton>
             <Footer></Footer>
+            <CookiesConsent></CookiesConsent>
         </div>
     );
 };

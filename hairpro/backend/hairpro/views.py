@@ -1,5 +1,6 @@
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from rest_framework.authentication import SessionAuthentication
+from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status, viewsets
@@ -54,13 +55,15 @@ class UserLogin(APIView):
             return Response(tab, status=status.HTTP_200_OK)
 
 class UserLogout(APIView):
+    permission_classes = (permissions.AllowAny,)
     def post(self, request):
         logout(request)
         return Response(status=status.HTTP_200_OK)
 
 class UserView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.AllowAny,)
+    # permission_classes = (permissions.IsAuthenticated,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def get(self, request):
         serializer = UserSerializer(request.user)
@@ -76,7 +79,7 @@ class UserDetail(generics.ListAPIView):
 
 class UserUpdate(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
@@ -144,7 +147,7 @@ class TeamView(generics.ListAPIView):
 
 class SearchUserView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
@@ -157,7 +160,7 @@ class SearchUserView(APIView):
 
 class ScheduleCreateView(APIView):
     permission_classes = (permissions.AllowAny,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
@@ -179,7 +182,7 @@ class ScheduleUserView(generics.ListAPIView):
 
 class DeleteUserScheduleView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     serializer_class = ScheduleSerializer
     def get_queryset(self):
@@ -210,7 +213,7 @@ class StoreScheduleView(generics.ListAPIView):
 
 class AppointmentCreateView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
@@ -242,7 +245,7 @@ class GetHairstyleView(generics.ListAPIView):
 
 class HairstyleCreateView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
@@ -255,7 +258,7 @@ class HairstyleCreateView(APIView):
 
 class HairstyleUpdateView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
@@ -268,7 +271,7 @@ class HairstyleUpdateView(APIView):
 
 class AppointmentDoneView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
@@ -281,7 +284,7 @@ class AppointmentDoneView(APIView):
 
 class HairstyleDeleteView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     serializer_class = HairstyleSerializer
     def get_queryset(self):
@@ -295,7 +298,7 @@ class HairstyleDeleteView(generics.ListAPIView):
 
 class RemoveUserTeamView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
@@ -308,7 +311,7 @@ class RemoveUserTeamView(generics.ListAPIView):
 
 class AddUserTeamView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
@@ -323,7 +326,7 @@ class AddUserTeamView(APIView):
 
 class AppointmentUserView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     serializer_class = AppointmentCreateSerializer
     def get_queryset(self):
@@ -342,7 +345,7 @@ class GalerieView(generics.ListAPIView):
 
 class GalerieCreateView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
@@ -355,7 +358,7 @@ class GalerieCreateView(APIView):
 
 class RemoveGalerieView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     serializer_class = GalerieCreateSerializer
     def get_queryset(self):
@@ -369,7 +372,7 @@ class RemoveGalerieView(generics.ListAPIView):
 
 class TestimonieCreateView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
@@ -394,7 +397,7 @@ class TestimonieView(generics.ListAPIView):
 
 class RemoveTestimonieView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     serializer_class = TestimonieCreateSerializer
     def get_queryset(self):
@@ -405,7 +408,7 @@ class RemoveTestimonieView(generics.ListAPIView):
 
 class UpdateTestimonieView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data
@@ -426,7 +429,7 @@ class StoreContactView(generics.ListAPIView):
 
 class StoreUpdateContactView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     ##
     def post(self, request):
         data = request.data

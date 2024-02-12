@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+# import MySQLdb
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,14 +35,13 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'hairpro',
     'corsheaders',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    
 ]
 
 MIDDLEWARE = [
@@ -60,42 +60,52 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
     )
 }
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000','http://192.168.0.200:3000']
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.SessionAuthentication',],
+#     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',],}
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 
 ROOT_URLCONF = 'backend.urls'
 
 # CSRF_COOKIE_NAME = "csrftoken"
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
 
 # # CORS_EXPOSE_HEADERS = (
 # #     'Access-Control-Allow-Origin: *',
 # # )
 
 
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ORIGIN_ALL_ALLOW = [
-    'http://localhost:3000','http://192.168.0.200:3000'
-]
+# CORS_ORIGIN_ALL_ALLOW = [
+#     'http://localhost:3000','http://192.168.0.200:3000'
+# ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000', 'http://192.168.0.200:3000'
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3000', 'http://192.168.0.200:3000'
+# ]
 
 CORS_ALLOW_CREDENTIALS = True
 
 
-CORS_ORIGIN_ORIGINS = [
-    'http://localhost:3000','http://192.168.0.200:3000'
-]
+# CORS_ORIGIN_ORIGINS = [
+#     'http://localhost:3000','http://192.168.0.200:3000'
+# ]
 
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000','http://192.168.0.200:3000'
-)
+# CORS_ORIGIN_WHITELIST = (
+#     'http://localhost:3000','http://192.168.0.200:3000'
+# )
 
 TEMPLATES = [
     {
@@ -121,10 +131,18 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # },
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'd9see5r5r1q5v7',
+            'USER': 'bpsjvyimodjmcp',
+            'PASSWORD': 'bda2383b1263a1bee02d6b0cf1e7510a6e384e8f586652693790a973ad4cab2f',
+            'HOST': 'ec2-54-159-193-105.compute-1.amazonaws.com',
+            'PORT': '5432',
+        }
 }
 
 ## User model
@@ -173,9 +191,9 @@ MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
 
 MEDIA_URL = '/media/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'hairpro/static')
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'hairpro/static')
+# ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

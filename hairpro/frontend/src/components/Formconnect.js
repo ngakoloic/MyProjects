@@ -3,6 +3,7 @@ import { Alert, Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { register, handleForm, data, getCookie, client } from '../data/functions';
 import { AppContext } from '../reducers/AppContext';
 import FormRegister from './FormRegister';
+import CookieConsent, { Cookies } from "react-cookie-consent";
 
 const Formconnect = (props) => {
 
@@ -26,6 +27,9 @@ const Formconnect = (props) => {
             sessionStorage.setItem('super', res.data[2])
             // console.log(sessionStorage.getItem('id'));
             SetUsername(res.data[0]);
+            // let cookieHeader = res.headers.get('set-cookie')
+            // console.log(res)
+            // Cookies.set('csrftoken', Cookies.get('csrftoken'))
             // client.get('api/user-detail/').then((response) => {
             //     console.log(response.data);
             // }).catch((err) => console.log(err))
