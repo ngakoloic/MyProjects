@@ -25,7 +25,6 @@ const Mynavbar = () => {
       dispatch({
         type: 'USER-CONNECT'
       });
-      sessionStorage.setItem('email', res.data.user.email)
     }).catch((err) => {
       dispatch({
         type: 'USER-CONNECT-NOT'
@@ -58,7 +57,7 @@ const Mynavbar = () => {
     <>
       <Navbar key='lg' expand='lg' className="bg-body-tertiary" sticky="top">
         <Container>
-          <Navbar.Brand href="#">
+          <Navbar.Brand href="/">
             <Image src="./logo.png" alt="Logo" width="55" height="45"></Image>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />

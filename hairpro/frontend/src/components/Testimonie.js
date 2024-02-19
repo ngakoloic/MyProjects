@@ -78,6 +78,7 @@ const Testimonie = () => {
         ).then((res) => {
             if (res.status == 201) {
                 // Get the list of testimonies make by user
+                document.getElementById('loading_review').innerHTML = '<div class="alert alert-success" role="alert">Your review has been send!</div>';
                 getTestimonies()
             }
             return true
@@ -183,9 +184,7 @@ const Testimonie = () => {
                             rows={4}
                             placeholder='Enter your text...'
                             onChange={(e) => handleForm(e)} />
-                        <div class="invalid-feedback">
-                            Testimonie is required.
-                        </div>
+                        <div id="loading_review" style={{ marginTop: 10, textAlign: 'center' }}></div>
                         <Button type='submit' style={{ marginBottom: 3, width: '100%' }}>Add</Button>
                     </Form>
                 </Modal.Body>

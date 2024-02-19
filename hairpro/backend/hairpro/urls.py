@@ -33,6 +33,7 @@ urlpatterns = [
     path('user/', views.UserView.as_view(), name='user'),
     path('user/<int:id>/', views.UserDetail.as_view(), name='user-detail'),
     path('user/change/', views.UserUpdate.as_view(), name='user-detail-update'),
+    path('user/get-email/<int:id>/', views.UserEmail.as_view(), name='user-email'),
     path('store/', views.StoreView.as_view(), name='stores'),
     path('store/team/', views.TeamView.as_view(), name='team'),
     path('store/hairstyle/', views.HairstyleView.as_view(), name='hairstyle'),
@@ -60,6 +61,7 @@ urlpatterns = [
     path('store/testimonie/update/', views.UpdateTestimonieView.as_view(), name='update-testimonie'),
     path('store/contact/', views.StoreContactView.as_view(), name='store-contact'),
     path('store/update-contact/', views.StoreUpdateContactView.as_view(), name='update-contact'),
+    path('schedule/get-iduser/<int:id_hairstyle>/', views.ScheduleGetIdUser.as_view(), name='get-iduser'),
 ]
 
 # urlpatterns += router.urls

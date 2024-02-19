@@ -136,6 +136,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
     # ,
+    # DataBase for Loic
     # 'default': {
     #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
     #         'NAME': 'd9see5r5r1q5v7',
@@ -144,6 +145,15 @@ DATABASES = {
     #         'HOST': 'ec2-54-159-193-105.compute-1.amazonaws.com',
     #         'PORT': '5432',
     #     }
+    # DataBase for Jenny
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'd17d4tnl84qp3j',
+    #     'USER': 'ksafruviubbfwo',
+    #     'PASSWORD': '5e60c819aab36e6f0594c9497516955ef04efbdbabf2ba4280d653bf10449ee6',
+    #     'HOST': 'ec2-52-205-171-232.compute-1.amazonaws.com',
+    #     'PORT': '5432',
+    # }
 }
 
 ## User model

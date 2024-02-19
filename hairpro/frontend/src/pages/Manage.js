@@ -181,7 +181,7 @@ const Manage = (props) => {
     }
     const searchUser = (e) => {
         if (e.target.value.length > 2 && e.target.value.length <= 5) {
-            client.post('api/user/search/', { 'pseudo': e.target.value },
+            client.post('api/user/search/', { 'pseudo': e.target.value.toLowerCase() },
                 {
                     headers: { "X-CSRFToken": getCookie('csrftoken') },
                 }

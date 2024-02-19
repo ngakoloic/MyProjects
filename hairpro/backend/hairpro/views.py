@@ -48,6 +48,7 @@ class UserLogin(APIView):
             hash_superuser = serializer_3.data[0]['is_superuser']
             hash_superuser = 'cjiwfier4h5i9ehew943hh4i5rgfbq9439rhbneifr39mnzx' if (hash_superuser == True) else 'efcurehfcbeuwcuecvjewqwuedwavxcqwpeoiduewganxsqxvazx'
             
+            tab.append(serializer_3.data[0]['email'])
             tab.append(serializer_1.data['username'])
             tab.append(serializer_2.data[0]['id'])
             tab.append(hash_superuser)
@@ -209,6 +210,8 @@ class StoreScheduleView(generics.ListAPIView):
         now = datetime.now()
         formatted_now = now.strftime("%Y-%m-%d")
         schedule = Schedule.objects.filter(status=1, date_created__gte=formatted_now)
+        past_schedule = Schedule.objects.filter(date_created__lt=formatted_now)
+        past_schedule.delete()
         return schedule
 
 class AppointmentCreateView(APIView):
@@ -439,3 +442,22 @@ class StoreUpdateContactView(APIView):
             if contact_obj:
                 return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+class ScheduleGetIdUser(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    ##
+    serializer_class = ScheduleSerializer
+    def get_queryset(self):
+        id_hairstyle = self.kwargs['id_hairstyle']
+        schedule_obj = Schedule.objects.filter(id=id_hairstyle)
+        return schedule_obj
+    
+class UserEmail(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    ##
+    serializer_class = UserSerializer
+    def get_queryset(self):
+        id = self.kwargs['id']
+        userdetail_obj = DetailUser.objects.get(id=id)
+        items = User.objects.select_related('detailuser').filter(id=userdetail_obj.user_id)
+        return items

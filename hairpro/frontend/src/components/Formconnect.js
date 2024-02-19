@@ -22,11 +22,12 @@ const Formconnect = (props) => {
             dispatch({
                 type: 'USER-CONNECT'
             });
-            sessionStorage.setItem("id", res.data[1]);
-            sessionStorage.setItem("user", res.data[0]);
-            sessionStorage.setItem('super', res.data[2])
+            sessionStorage.setItem("id", res.data[2]);
+            sessionStorage.setItem("user", res.data[1]);
+            sessionStorage.setItem('super', res.data[3]);
+            sessionStorage.setItem('email', res.data[0])
             // console.log(sessionStorage.getItem('id'));
-            SetUsername(res.data[0]);
+            SetUsername(res.data[1]);
             // let cookieHeader = res.headers.get('set-cookie')
             // console.log(res)
             // Cookies.set('csrftoken', Cookies.get('csrftoken'))

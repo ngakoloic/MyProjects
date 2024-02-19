@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Mynavbar from '../components/Navbarcomp';
 import Headerpage from '../components/Headerpage';
 import { Breadcrumb, Alert, Image, Form, Button, Spinner, Tabs, Tab, Modal, Badge } from 'react-bootstrap';
@@ -8,9 +8,11 @@ import Iconbutton from '../components/Iconbutton';
 import Footer from '../components/Footer';
 import { getCookie, data, client } from '../data/functions';
 import imageCompression from 'browser-image-compression';
+import { AppContext } from '../reducers/AppContext';
 
 
 const MySpace = (props) => {
+    const { dispatch } = useContext(AppContext);
     const [username, SetUsername] = useState();
     const [usernameinput, SetUsernameinput] = useState();
     const [pseudo, SetPseudo] = useState();
@@ -85,6 +87,7 @@ const MySpace = (props) => {
                             SetCountAppointment(tab.length)
                             SetScheduleList(tab)
                         }, 100);
+                        dispatch({});
                     }).catch((err) => {
                         console.log(err);
                         return false
@@ -104,7 +107,7 @@ const MySpace = (props) => {
         e.preventDefault();
         document.getElementById('loading').style.display = 'block';
         const formData = new FormData()
-        formData.append('pseudo', pseudo)
+        formData.append('pseudo', pseudo.toLowerCase())
         formData.append('tel', tel)
         formData.append('isbarber', isbarber)
         formData.append('id', sessionStorage.getItem('id'))
